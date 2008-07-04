@@ -1,10 +1,12 @@
 package com.zavoo.svg.nodes
 {
 	import com.zavoo.svg.data.SVGColors;
-	import flash.display.Sprite;
+	
 	import flash.display.DisplayObject;
-	import mx.utils.ObjectUtil;
+	import flash.display.Sprite;
 	import flash.geom.Matrix;
+	
+	import mx.utils.ObjectUtil;
 	
 		
 	/** Base node to be extended by all other SVG Nodes **/
@@ -388,10 +390,45 @@ package com.zavoo.svg.nodes
 			return '#000000';
 		}
 		
-		public function cleanNumber(num:*):Number {
+		public function cleanNumber(num:*):Number {		
+			var number:Number = Number(numString)
 			var numString:String = String(num);
-			numString = numString.replace(/[^0-9\.]+/sig,'');
 			return Number(numString);
+		}
+		
+		public function cleanDimension(num:*):Number {			
+			var numString:String = String(num);
+			var factor:Number = 1;
+			
+			/*
+			* "1pt" equals "1.25px" (and therefore 1.25 user units)
+		    * "1pc" equals "15px" (and therefore 15 user units)
+		    * "1mm" would be "3.543307px" (3.543307 user units)
+		    * "1cm" equals "35.43307px" (and therefore 35.43307 user units)
+		    * "1in" equals "90px" (and therefore 90 user units)
+		    */
+		    
+			/*if (numString.match(/pt/)) {
+				factor = 1.25;
+			}
+			else if (numString.match(/pc/)) {
+				factor = 15;
+			}
+			else*/
+			if (numString.match(/mm/)) {
+				factor = 10; //3.543307;
+			}
+			else if (numString.match(/cm/)) {
+				factor = 100; //35.43307;
+			}
+			/*else if (numString.match(/in/)) {
+				factor = 90;
+			}*/	
+
+			numString = numString.replace(/[^0-9\.]+/sig,'');
+			
+			var number:Number = Number(numString) * factor;
+			return number;
 		}
 				
 		/**** Getters / Setters ****/
