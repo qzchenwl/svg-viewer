@@ -272,7 +272,7 @@ package com.zavoo.svg.nodes
 					case "ELLIPSE":
 						this.nodeBeginFill();
 						//command[3] & command[4] are radius values, multiply by 2 to get width and height
-						this.graphics.drawEllipse(command[1], command[2], (command[3] * 2), (command[4] * 2));
+						this.graphics.drawEllipse((command[1] - command[3]), (command[2] - command[4]), (command[3] * 2), (command[4] * 2));
 						this.nodeEndFill();
 						break;	
 					
