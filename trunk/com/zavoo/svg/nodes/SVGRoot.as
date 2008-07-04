@@ -58,8 +58,8 @@ package com.zavoo.svg.nodes
 				this.removeChildAt(0);
 			}
 			this._xml = this.preprocessXML(xml);
-			this._origWidth = this.cleanNumber(this._xml.@width);
-			this._origHeight = this.cleanNumber(this._xml.@height);
+			this._origWidth = this.cleanDimension(this._xml.@width);
+			this._origHeight = this.cleanDimension(this._xml.@height);
 			
 			this.parse();	
 			this.transformNode();

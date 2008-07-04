@@ -1,5 +1,7 @@
 package com.zavoo.svg.nodes
 {
+	import com.zavoo.svg.utils.EllipticalArc;
+	
 	import mx.utils.StringUtil;
 	
 	public class SVGPathNode extends SVGNode
@@ -184,7 +186,18 @@ package com.zavoo.svg.nodes
 		
 		private function ellipticalArc(rx:Number, ry:Number, xAxisRotation:Number, largeArcFlag:Number, 
 										sweepFlag:Number, x:Number, y:Number, isAbs:Boolean):void {
-			this.line(x,y,isAbs);		
+			if (!isAbs) {
+				x += this.currentX;
+				y += this.currentY;
+			}
+			
+			
+			y -= ry * 2; //y is off by the diameter of the ellipse, Why?!?
+			
+			EllipticalArc.drawArc(rx, ry, xAxisRotation, Boolean(largeArcFlag), Boolean(sweepFlag), x, y, this.currentX, this.currentY, this._graphicsCommands);
+			
+			this.currentX = x;
+			this.currentY = y;		
 		}		
 		
 		private function quadraticBezierSmooth(x:Number, y:Number, isAbs:Boolean):void {
