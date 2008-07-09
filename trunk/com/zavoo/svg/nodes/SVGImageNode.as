@@ -1,30 +1,26 @@
 package com.zavoo.svg.nodes
 {
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
-	import mx.utils.Base64Decoder;
-	import flash.utils.ByteArray;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
-	import flash.display.BitmapData;
-	import flash.display.Shape;
 	import flash.events.Event;
-	import flash.net.URLRequest;
-	import flash.net.URLLoader;
 	import flash.geom.Matrix;
-	import flash.display.Sprite;
+	import flash.utils.ByteArray;
 	
-	import mx.utils.Base64Encoder;
+	import mx.utils.Base64Decoder;
 	
 	public class SVGImageNode extends SVGNode
 	{		
-		private var bitmap:Bitmap;	
+		private var bitmap:Bitmap;
+		private var orignalBitmap:Bitmap;
                    
 		public function SVGImageNode(xml:XML):void {
 			super(xml);
 		}	
 				
-		public override function draw():void {
+		protected override function draw():void {
 			var decoder:Base64Decoder = new Base64Decoder();
 			var byteArray:ByteArray;
 			
@@ -78,9 +74,9 @@ package com.zavoo.svg.nodes
 			//spriteMask.transform.matrix = bitmap.transform.matrix.clone();			
 		}	
 				
-		override protected function transformNode():void {
+		/*override protected function transformNode():void {
 			
-		}		
+		}*/		
 		
 		private function getTransformMatrix(transform:String):Matrix {
 			var newMatrix:Matrix = new Matrix();

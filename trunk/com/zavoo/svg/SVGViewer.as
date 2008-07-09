@@ -1,104 +1,116 @@
 package com.zavoo.svg
 {
+	
 	import com.zavoo.svg.nodes.SVGRoot;
 	
 	import flash.geom.Transform;
 	
 	import mx.containers.Canvas;
 
+	/**
+	 * Flex container for the SVG Renderer
+	 **/
 	public class SVGViewer extends Canvas
 	{
-		private var svgRoot:SVGRoot;
+		private var _xml:XML;
+		private var _svgRoot:SVGRoot;
 		
-		public function SVGViewer(){
-			svgRoot = new SVGRoot();	
-			this.rawChildren.addChild(svgRoot);
+		public function SVGViewer() {
+			super();
+			this._svgRoot = new SVGRoot(null);
+			this.rawChildren.addChild(this._svgRoot);
 		}
-				
+		
 		/**
-		 * Get / Set Functions 
+		 * @private
 		 **/
-		 
-		
-		/* xml*/
-		public function get xml():XML {
-			return svgRoot.xml;
-		}
-				
-		public function set xml(xml:XML):void {
+		public function set xml(value:XML):void {			
+			this._svgRoot.xml = value;
 						
-			//Pass XML off to svgDocReader
-			this.svgRoot.xml = xml;
-			
-			//Have svgDocReader draw SVG
-			svgRoot.draw();
-			
-			// Set/Reset scale
-			this.scale = 1;	
 		}
 		
+		/**
+		 * Access _svgRoot xml value
+		 **/
+		public function get xml():XML {
+			return this._svgRoot.xml
+		}
 		
-		/* scale */
+		/**
+		 * @private
+		 **/
 		public function set scale(scale:Number):void {
-			svgRoot.scale = scale;
+			this._svgRoot.scale = scale;
 
 			//Scale canvas to match size of  SVG
-			this.width = svgRoot.origWidth * scale;
-			this.height = svgRoot.origHeight * scale; 
+			this.width = this._svgRoot.width;
+			this.height = this._svgRoot.height; 
 		}
 		
+		/**
+		 * Set scaleX and scaleY at the same time
 		public function get scale():Number {
 			return svgRoot.scale;				
 		}
 		
 		
-		/* scaleX */
+		/**
+		 * @private
+		 **/
 		override public function set scaleX(value:Number):void {
-			this.svgRoot.scaleX = value;	
+			this._svgRoot.scaleX = value;	
 		}
 		
 		override public function get scaleX():Number {
-			return this.svgRoot.scaleX;
+			return this._svgRoot.scaleX;
 		}
 		
 		
-		/* scaleY */
+		/**
+		 * @private
+		 **/
 		override public function set scaleY(value:Number):void {
-			this.svgRoot.scaleY = value;
+			this._svgRoot.scaleY = value;
 		}
 		
 		override public function get scaleY():Number {
-			return this.svgRoot.scaleY;
+			return this._svgRoot.scaleY;
 		}
 		
 		
-		/* rotation */
+		/**
+		 * @private
+		 **/
 		override public function set rotation(value:Number):void {
-			this.svgRoot.rotation = value;
+			this._svgRoot.rotation = value;
 		}
 		
 		override public function get rotation():Number {
-			return this.svgRoot.rotation;
+			return this._svgRoot.rotation;
 		}
 		
 		
-		/* transform */
+		/**
+		 * @private
+		 **/
 		override public function set transform(value:Transform):void {
-			this.svgRoot.transform = value;
+			this._svgRoot.transform = value;
 		}
 		
 		override public function get transform():Transform {
-			return this.svgRoot.transform;
+			return this._svgRoot.transform; 
 		}
 		
 		
-		/* filters */
+		/**
+		 * @private
+		 **/
 		override public function set filters(value:Array):void {
-			this.svgRoot.filters = value;
+			this._svgRoot.filters = value;
 		}
 		
 		override public function get filters():Array {
-			return this.svgRoot.filters;
+			return this._svgRoot.filters;
 		}
 		
 	}

@@ -8,7 +8,12 @@ package com.zavoo.svg.nodes
 			super(xml);
 		}	
 		
+		/**
+		 * Generate graphics commands to draw a polyline
+		 **/
 		protected override function generateGraphicsCommands():void {
+			
+			this._graphicsCommands = new  Array();
 			
 			var pointsString:String = StringUtil.trim(this.getAttribute('points',''));
 			var points:Array = pointsString.split(' ');
@@ -27,9 +32,7 @@ package com.zavoo.svg.nodes
 				}				
 			}
 			
-			this._graphicsCommands.push(['R', x, y, width, height]);
-			
-			
+			this._graphicsCommands.push(['R', x, y, width, height]);			
 		}
 		
 	}

@@ -2,6 +2,9 @@ package com.zavoo.svg.data
 {	
 	public class SVGColors
 	{
+		/**
+		 * Object of colors by name
+		 **/
 		static public var colors:Object = {};
 			colors.blue=0x0000ff;
 			colors.green=0x008000;
@@ -151,6 +154,9 @@ package com.zavoo.svg.data
 			colors.yellow = 0xffff00;
 			colors.yellowgreen = 0x9acd32;
 			
+		/**
+		 * Convert a decimal number to hex
+		 **/
 		static public function d2h( d:int ) : String {
 			var c:Array = [ '0', '1', '2', '3', '4', '5', '6', '7', '8',
 					'9', 'A', 'B', 'C', 'D', 'E', 'F' ];
@@ -160,11 +166,10 @@ package com.zavoo.svg.data
 			return c[l] + c[r];
 		}
 		
-		static public function getHexColor( color:Number ):String {
-			var rgb:Object = numberToRgb(color);
-			return('#' + d2h(rgb.r) + d2h(rgb.g) + d2h(rgb.b));
-		}
 		
+		/**
+		 * Convert a color number to red, green and blue values
+		 **/
 		static public function numberToRgb(num:Number):Object {
 			var red:Number       = num >> 16;
 			var greenBlue:Number = num-(red << 16);
@@ -172,6 +177,58 @@ package com.zavoo.svg.data
 			var blue:Number      = greenBlue-(green << 8);
 			
 			return {r:red, g:green, b:blue};
+		}
+		
+		/**
+		 * Get the number value of a color string
+		 * 
+		 * @param color String value of a color ('black', '#ff0000', etc...)
+		 * 
+		 * @return Numeric value of color
+		 **/
+		static public function getColor(color:String):Number {
+			if(color.match(/^#/)) {
+				color = color.replace('#', '0x');
+				return parseInt(color);
+			}
+			else if (colors.hasOwnProperty(color)) {
+				return colors[color];
+			}
+			
+			return 0x000000;
+
+		}
+				
+		/**
+		 * Get a hex string of a color string
+		 * 
+		 * @param color String value of a color ('black', '#ff0000', etc...)
+		 * 
+		 * @return Hex value of color
+		 **/
+		static public function getHexColor(color:String):String {
+			if(color.match(/^#/)) {
+				return color;
+			}
+			else if (colors.hasOwnProperty(color)) {
+				var rgb:Object = numberToRgb(SVGColors.colors[color]);
+				return('#' + d2h(rgb.r) + d2h(rgb.g) + d2h(rgb.b));
+			}
+			
+			return '#000000';
+		}
+		
+		/**
+		 * Remove the numeric value of string will all characters removed except '0-9', '.', and '-'
+		 * 
+		 * @param String to be cleaned
+		 * 
+		 * @return Numeric value of string will all characters removed except '0-9', '.', and '-'
+		 **/
+		static public function cleanNumber(num:*):Number {
+			var numString:String = String(num);
+			numString = numString.replace(/[^0-9\.-]+/sig,'');
+			return Number(numString);
 		}
 	}
 }
