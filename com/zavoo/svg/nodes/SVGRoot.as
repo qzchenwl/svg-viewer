@@ -12,7 +12,7 @@ package com.zavoo.svg.nodes
 		/**
 		 * Object to hold node id registration
 		 **/
-		private var _elementById:Object;
+		public var _elementById:Object;
 				
 		public function SVGRoot(xml:* = null):void {
 			if (xml != null) {				
@@ -61,7 +61,9 @@ package com.zavoo.svg.nodes
 		 * @param node node to be registered
 		 **/
 		public function registerElement(id:String, node:*):void {
-			this._elementById[id] = node;
+			if (!this._elementById.hasOwnProperty(id)){
+				this._elementById[id] = node;
+			}
 		}
 		
 		/**
@@ -72,8 +74,8 @@ package com.zavoo.svg.nodes
 		 * @return node registered with id
 		 **/
 		public function getElement(id:String):* {
-			if (this._elementById.hasOwnProperty(name)) {
-				return this._elementById[id];
+			if (this._elementById.hasOwnProperty(id)) {
+				return this._elementById[id]; 
 			}
 			return null;
 		}
@@ -120,14 +122,14 @@ package com.zavoo.svg.nodes
 			var viewBox:String = this.getStyle('viewBox');
 			if (viewBox != null) {
 				var points:Array = viewBox.split(/\s+/);
-				this.addMask(points[0], points[1], points[2], points[3]);				
+				this.addRootMask(points[0], points[1], points[2], points[3]);				
 			}
 			else {
 				var w:String = this.getAttribute('width');
 				var h:String = this.getAttribute('height');
 				
 				if ((w != null) && (h != null)) {
-					this.addMask(0, 0, SVGColors.cleanNumber(w), SVGColors.cleanNumber(h));
+					this.addRootMask(0, 0, SVGColors.cleanNumber(w), SVGColors.cleanNumber(h));
 				}
 			}
 		}		
@@ -135,7 +137,7 @@ package com.zavoo.svg.nodes
 		/**
 		 * Draw rectangluar mask 
 		 **/
-		protected function addMask(xVal:Number, yVal:Number, widthVal:Number, heightVal:Number):void {
+		protected function addRootMask(xVal:Number, yVal:Number, widthVal:Number, heightVal:Number):void {
 			if (this.mask == null) {
 					this.mask = new Shape();
 					this.addChild(this.mask);

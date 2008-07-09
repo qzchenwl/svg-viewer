@@ -30,7 +30,7 @@ package com.zavoo.svg
 		}
 		
 		/**
-		 * Access _svgRoot xml value
+		 * SVG XML value
 		 **/
 		public function get xml():XML {
 			return this._svgRoot.xml
@@ -49,8 +49,9 @@ package com.zavoo.svg
 		
 		/**
 		 * Set scaleX and scaleY at the same time
+		 **/
 		public function get scale():Number {
-			return svgRoot.scale;				
+			return this._svgRoot.scale;				
 		}
 		
 		

@@ -75,5 +75,12 @@ package com.zavoo.svg.nodes
 			super.xml = xml;
 		}
 		
+		/**
+		 * SVGUseNode is a copy, do not register
+		 **/
+		override protected function registerId():void {
+			//Do Nothing		
+		}
+		
 	}
 }

@@ -10,12 +10,7 @@ package com.zavoo.svg.nodes
 		public function SVGDefsNode(xml:XML):void {
 			super(xml);
 		}		
-		
-		/* override protected function setAttributes():void {
-			//Register Symbol		
-			this.svgRoot.registerDef(this);
-		} */
-		
+				
 		public function getDef(name:String):XML {
 			for each(var node:XML in this._xml.children()) {
 				if (node.@id == name) {

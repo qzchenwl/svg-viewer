@@ -1,6 +1,7 @@
 package com.zavoo.svg.nodes
 {
-	import com.zavoo.svg.data.SVGColors;	
+	import com.zavoo.svg.data.SVGColors;
+	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Matrix;
@@ -117,7 +118,7 @@ package com.zavoo.svg.nodes
 				var clipPath:String = xmlList[0].toString();
 				clipPath = clipPath.replace(/url\(#(.*?)\)/si,"$1");
 				var clipPathNode:SVGClipPathNode = this.svgRoot.getElement(clipPath);
-				if (clipPath != null) {					
+				if (clipPathNode != null) {					
 					this.addMask(clipPathNode);
 				}				
 			}
@@ -167,7 +168,7 @@ package com.zavoo.svg.nodes
 						var args:String = String(tranArray[1]);
 						args = args.replace(')','');
 						var argsArray:Array = args.split(/[, ]/);
-						//trace('Transform: ' + tran);
+						
 						switch (command) {
 							case "matrix":
 								if (argsArray.length == 6) {
@@ -215,11 +216,8 @@ package com.zavoo.svg.nodes
 								trace('Unknown Transformation: ' + command);
 						}
 					}
-				}
-				
+				}				
 			}
-			
-			
 		}
 		
 		/**
@@ -345,8 +343,7 @@ package com.zavoo.svg.nodes
 						//command[3] & command[4] are radius values, multiply by 2 to get width and height
 						this.graphics.drawEllipse((command[1] - command[3]), (command[2] - command[4]), (command[3] * 2), (command[4] * 2));
 						this.nodeEndFill();
-						break;	
-					
+						break;
 				}
 			}
 		}
@@ -354,7 +351,7 @@ package com.zavoo.svg.nodes
 		/**
 		 * If node has an "id" attribute, register it with the root node
 		 **/
-		protected function registerId():void {
+		protected function registerId():void {			
 			var id:String = this._xml.@id;
 			if (id != "") {
 				this.svgRoot.registerElement(id, this);

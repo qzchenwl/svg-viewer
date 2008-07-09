@@ -21,10 +21,6 @@ package com.zavoo.svg.nodes
 			var height:Number = this.getAttribute('height',0);			
 			
 			this._graphicsCommands.push(['RECT', x, y, width, height]);
-		}	
-		
-		override public function set mask(value:DisplayObject):void {
-			super.mask = value;
-		}
+		}		
 	}
 }

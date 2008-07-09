@@ -36,6 +36,9 @@ package com.zavoo.svg.nodes
 			this.refreshGraphics();
 		}
 		
+		/**
+		 * Override default fill and stroke styles
+		 **/
 		override public function getStyle(name:String):String {
 			var style:String = '';
 			
@@ -57,6 +60,13 @@ package com.zavoo.svg.nodes
 			
 			return style;			
 					
+		}
+		
+		/**
+		 * SVGMask is a copy, do not register
+		 **/
+		override protected function registerId():void {
+			//Do Nothing		
 		}
 	}
 }
