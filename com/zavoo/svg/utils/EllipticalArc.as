@@ -1,12 +1,14 @@
 package com.zavoo.svg.utils
 {
+	/**
+	* Functions from degrafa
+	* com.degrafa.geometry.utilities.ArcUtils
+	**/
 	public class EllipticalArc
 	{
 		/** 
-		 * Functions from degrafa
-		 * com.degrafa.geometry.utilities.ArcUtils
+		 * @private
 		 **/
-		 
 		private static function computeSvgArc(rx:Number, ry:Number,angle:Number,largeArcFlag:Boolean,sweepFlag:Boolean,
 												x:Number,y:Number,LastPointX:Number, LastPointY:Number):Object {
 	        //store before we do anything with it	 
@@ -100,14 +102,26 @@ package com.zavoo.svg.utils
 			
 	    }
 	    
+	    /**
+	    * @private
+	    * Convert degrees to radians
+	    **/
 	    private static function degressToRadius(angle:Number):Number{
 			return angle*(Math.PI/180);
 		}
 		
+		/**
+		 * @private
+		 * Convert radiansToDegrees
+		 **/
 		private static function radiusToDegress(angle:Number):Number{
 			return angle*(180/Math.PI);
 		}
 		
+		/**
+		 * @private
+		 * Create quadratic circle graphics commands from an elliptical arc
+		 **/
 		private static function drawEllipticalArc(x:Number, y:Number, startAngle:Number, arc:Number, radius:Number,yRadius:Number,commandStack:Array):void
 		{
 			
@@ -178,6 +192,29 @@ package com.zavoo.svg.utils
 			}
 		}
 		
+		/**
+		 * Create quadratic arc graphics commands based on an SVG elliptical arc
+		 * 
+		 * @param rx x radius
+		 * 
+		 * @param ry y radius
+		 * 
+		 * @param angle angle of rotation from the x-axis
+		 * 
+		 * @param largeArcFlag true if arc is greater than 180 degrees
+		 * 
+		 * @param sweepFlag determines if the arc proceeds in a postitive or negative radial direction
+		 * 
+		 * @param x arc end x value
+		 * 
+		 * @param y arc end y value
+		 * 
+		 * @param LastPointX starting x value of arc
+		 * 
+		 * @param LastPointY starting y value of arc
+		 * 
+		 * @param graphicCommands array to hold graphics commands
+		 **/ 
 		public static function drawArc(rx:Number, ry:Number,angle:Number,largeArcFlag:Boolean,sweepFlag:Boolean,
 												x:Number,y:Number,LastPointX:Number, LastPointY:Number, graphicCommands:Array):void {
 			var ellipticalArc:Object = EllipticalArc.computeSvgArc(rx, ry, angle, largeArcFlag, sweepFlag, x, y, LastPointX, LastPointY);	

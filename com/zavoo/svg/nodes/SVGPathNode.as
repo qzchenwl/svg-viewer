@@ -16,7 +16,7 @@ package com.zavoo.svg.nodes
 			super(xml);
 		}	
 		
-		public override function draw():void {
+		protected override function draw():void {
 			this.graphics.lineStyle(1);
 			this.runGraphicsCommands();			
 		}
@@ -47,15 +47,16 @@ package com.zavoo.svg.nodes
 		
 		protected override function generateGraphicsCommands():void {
 			
-			this.attributes['stroke-width'] = this.getAttribute('stroke-width', 1);
-			this.attributes['stroke'] = this.getColor(this.getAttribute('stroke', 'black'));
+			/*this.attributes['stroke-width'] = this.getAttribute('stroke-width', 1);
+			//this.attributes['stroke'] = this.getColor(this.getAttribute('stroke', 'black'));
 			this.attributes['stroke-dasharray'] = this.getAttribute('stroke-dasharray', 'none');			
 			
 			// Alphas
 			this.attributes['fill-opacity'] = this.getAttribute('fill-opacity', 1);
 			this.attributes['stroke-opacity'] = this.getAttribute('stroke-opacity', 1);
-			this.attributes['opacity'] = this.getAttribute('opacity', 1);
+			this.attributes['opacity'] = this.getAttribute('opacity', 1);*/
 		
+			this._graphicsCommands = new  Array();
 			
 			var pathData:String = this.normalizeSVGData(this._xml.@d);			
 
@@ -137,11 +138,10 @@ package com.zavoo.svg.nodes
 						break;			
 								
 					default:
-						//trace("Unknown Segment Type");
+						trace("Unknown Segment Type: " + command);
 						break;
 				}			
-			}
-			
+			}			
 		}
 		
 		private function closePath():void {
@@ -197,8 +197,11 @@ package com.zavoo.svg.nodes
 			EllipticalArc.drawArc(rx, ry, xAxisRotation, Boolean(largeArcFlag), Boolean(sweepFlag), x, y, this.currentX, this.currentY, this._graphicsCommands);
 			
 			this.currentX = x;
-			this.currentY = y;		
-		}		
+			this.currentY = y;
+			
+		}
+		
+				
 		
 		private function quadraticBezierSmooth(x:Number, y:Number, isAbs:Boolean):void {
 			var x1:Number = this.currentX + (this.currentX - this.lastCurveControlX);

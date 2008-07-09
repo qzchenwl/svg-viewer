@@ -4,32 +4,52 @@ package com.zavoo.svg.nodes
 	
 	public class SVGClipPathNode extends SVGNode
 	{	
+		/**
+		 * Track changes to xml
+		 **/
+		private var _revision:uint = 0;
 		
 		public function SVGClipPathNode(xml:XML):void {	
 			super(xml);
+		}				
+		
+		/**
+		 * Override parent function to do nothing
+		 **/
+		protected override function parse():void {
+			//Do Nothing
 		}
 		
 		/**
-		 * We only want to draw a solid object so
-		 * ignore any attribute settings
-		 */
-		public override function setAttributes():void {
-			this.attributes['fill'] = 'black';
-			this.attributes['fill-opacity'] = 1;			
-			this.attributes['stroke'] = 'none';
-			
-			// Set child attributes			
-			for each (var childNode:SVGNode in this.children) {
-				childNode.setAttributes();
-			}
-		}		
+		 * Override parent function to do nothing
+		 **/
+		override protected function draw():void {
+			//Do Nothing
+		}
 		
 		/**
-		 * Draw self & set self as parent's mask
-		 */
-		public override function draw():void {
-			super.draw();			
-			Sprite(this.parent).mask = this;	
+		 * Override parent function to do nothing except create a blank _graphicsCommands array
+		 **/
+		override protected function generateGraphicsCommands():void {
+			//Do Nothing
+			this._graphicsCommands = new  Array();
 		}
+		
+		
+		/**
+		 * Increment _revision every time xml is updated
+		 **/
+		override public function set xml(xml:XML):void {
+			this._revision++;
+			super.xml = xml;
+		}
+				
+		/**
+		 * Current node revision, used for tracking changes
+		 **/
+		public function get revision():uint {
+			return this._revision;			
+		}
+				
 	}
 }

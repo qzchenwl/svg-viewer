@@ -7,7 +7,12 @@ package com.zavoo.svg.nodes
 			super(xml);
 		}	
 		
+		/**
+		 * Generate graphics commands to draw a circle
+		 **/
 		protected override function generateGraphicsCommands():void {
+			
+			this._graphicsCommands = new  Array();
 			
 			var cx:Number = this.getAttribute('cx',0);
 			var cy:Number = this.getAttribute('cy',0);
