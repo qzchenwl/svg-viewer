@@ -19,7 +19,10 @@ package com.zavoo.svg.nodes
 		public function SVGImageNode(xml:XML):void {
 			super(xml);
 		}	
-				
+		
+		/**
+		 * Decode the base 64 image and load it
+		 **/	
 		protected override function draw():void {
 			var decoder:Base64Decoder = new Base64Decoder();
 			var byteArray:ByteArray;
@@ -36,14 +39,20 @@ package com.zavoo.svg.nodes
 					
 			}
 		}
-				
+		
+		/**
+		 * Load image byte array
+		 **/
 		private function loadBytes(byteArray:ByteArray):void {
 			
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener( Event.COMPLETE, onBytesLoaded );			
 			loader.loadBytes( byteArray );				
 		}
-
+		
+		/**
+		 * Display image bitmap once bytes have loaded
+		 **/
 		private function onBytesLoaded( event:Event ) :void
 		{
 			var content:DisplayObject = LoaderInfo( event.target ).content;
@@ -55,30 +64,22 @@ package com.zavoo.svg.nodes
 			this.addChild(bitmap);
 			
 			//this.addImageMask();	
-			this.transformImage();
+			//this.transformImage();
 			
 		}
 		
-		/* private function addImageMask():void {
-			spriteMask = new Shape();
-			spriteMask.graphics.beginFill(0x000000,1);
-			spriteMask.graphics.drawRect(0,0,bitmap.width,bitmap.height);
-			spriteMask.graphics.endFill();
-			this.mask = spriteMask;
-			this.addChild(spriteMask);
-		} */
 		
-		private function transformImage():void {
+		/*private function transformImage():void {
 			var trans:String = String(this.getAttribute('transform', ''));
 			this.transform.matrix = this.getTransformMatrix(trans);
 			//spriteMask.transform.matrix = bitmap.transform.matrix.clone();			
-		}	
+		}*/	
 				
 		/*override protected function transformNode():void {
 			
 		}*/		
 		
-		private function getTransformMatrix(transform:String):Matrix {
+		/*private function getTransformMatrix(transform:String):Matrix {
 			var newMatrix:Matrix = new Matrix();
 			var trans:String = String(this.getAttribute('transform', ''));
 			
@@ -113,7 +114,7 @@ package com.zavoo.svg.nodes
 				}			
 			}			
 			return null;
-		}
+		}*/
 		
 	}
 }
