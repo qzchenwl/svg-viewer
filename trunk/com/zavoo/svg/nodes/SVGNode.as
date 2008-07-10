@@ -125,11 +125,13 @@ package com.zavoo.svg.nodes
 			
 			//If there is not a transform attribute see if we can load the placement values,
 			//Don't load both transform and placement values
-			if (this.getAttribute('transform') == null) {
+			if (this.getAttribute('transform') == null) {				
 				this.loadAttribute('x');	
 				this.loadAttribute('y');
 				this.loadAttribute('rotate', 'rotation');
 			}	
+			
+			this.loadStyle('opacity', 'alpha');
 								
 		}
 		
@@ -236,6 +238,22 @@ package com.zavoo.svg.nodes
 			}
 		} 
 		
+		/**
+		 * Load an SVG style into the current node
+		 * 
+		 * @param name Name of the SVG style to load
+		 * @param field Name of the node field to set. If null, the value of name will be used as the field attribute.
+		 **/ 
+		protected function loadStyle(name:String, field:String = null):void {
+			if (field == null) {
+				field = name;
+			}
+			var tmp:String = this.getStyle(name);
+			if (tmp != null) {
+				this[field] = tmp;
+			}
+		}
+		
 		
 		/** 
 		 * Clear current graphics and call runGraphicsCommands to render SVG element 
@@ -339,9 +357,8 @@ package com.zavoo.svg.nodes
 						this.nodeEndFill();
 						break;
 					case "ELLIPSE":
-						this.nodeBeginFill();
-						//command[3] & command[4] are radius values, multiply by 2 to get width and height
-						this.graphics.drawEllipse((command[1] - command[3]), (command[2] - command[4]), (command[3] * 2), (command[4] * 2));
+						this.nodeBeginFill();						
+						this.graphics.drawEllipse(command[1], command[2],command[3], command[4]);
 						this.nodeEndFill();
 						break;
 				}
@@ -379,6 +396,9 @@ package com.zavoo.svg.nodes
 						case "clippath":
 							this.addChild(new SVGClipPathNode(childXML));
 							break;
+						case "desc":
+							//Do Nothing
+							break;
 						case "defs":
 							this.addChild(new SVGDefsNode(childXML));
 							break;
@@ -393,15 +413,13 @@ package com.zavoo.svg.nodes
 							break;
 						case "line": 
 							this.addChild(new SVGLineNode(childXML));
-							break;
-							
+							break;							
 						case "metadata":
 							//Do Nothing
 							break;
 						case "namedview":
 							//Add Handling 
-							break;
-							
+							break;							
 						case "polygon":
 							this.addChild(new SVGPolygonNode(childXML));
 							break;
@@ -419,6 +437,9 @@ package com.zavoo.svg.nodes
 							break;						
 						case "text":	
 							this.addChild(new SVGTextNode(childXML));
+							break; 
+						case "title":	
+							//Do Nothing
 							break; 
 						case "tspan":						
 							this.addChild(new SVGTspanNode(childXML));
@@ -449,6 +470,9 @@ package com.zavoo.svg.nodes
 		public function getStyle(name:String):String{
 			if (this._style.hasOwnProperty(name)) {
 				return this._style[name];
+			}
+			else if (name == 'opacity') {
+				return '1';
 			}
 			else if (this.parent is SVGNode) {
 				return SVGNode(this.parent).getStyle(name);

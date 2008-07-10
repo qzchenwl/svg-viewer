@@ -15,8 +15,9 @@ package com.zavoo.svg.nodes
 			
 			this._graphicsCommands = new  Array();
 			
-			var x:Number = this.getAttribute('x',0);
-			var y:Number = this.getAttribute('y',0);
+			//x & y loaded in setAttributes()
+			var x:Number = 0; //this.getAttribute('x',0);
+			var y:Number = 0; //this.getAttribute('y',0);
 			var width:Number = this.getAttribute('width',0);
 			var height:Number = this.getAttribute('height',0);			
 			
