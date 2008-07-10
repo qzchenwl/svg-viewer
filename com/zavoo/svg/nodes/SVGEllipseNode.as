@@ -19,7 +19,7 @@ package com.zavoo.svg.nodes
 			var rx:Number = this.getAttribute('rx',0);
 			var ry:Number = this.getAttribute('ry',0);
 			
-			this._graphicsCommands.push(['ELLIPSE', cx, cy, rx, ry]);			
+			this._graphicsCommands.push(['ELLIPSE', (cx - rx), (cy - ry), (rx * 2), (ry * 2)]);			
 		}				
 	}
 }

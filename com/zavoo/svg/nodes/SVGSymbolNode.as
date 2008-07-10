@@ -18,7 +18,18 @@ package com.zavoo.svg.nodes
 		}	
 		
 		protected override function parse():void {
-			//Do Nothing
+			//Only Register Filter Nodes
+			for each (var childXML:XML in this._xml.children()) {
+				var nodeName:String = childXML.localName();
+				
+				if (childXML.nodeKind() == 'element') {
+					
+					nodeName = nodeName.toLowerCase();					
+					if (nodeName == 'filter') {
+						this.addChild(new SVGFilterNode(childXML));			
+					}
+				}
+			}
 		}
 		
 		override protected function draw():void {

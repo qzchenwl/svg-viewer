@@ -119,7 +119,7 @@ package com.zavoo.svg.nodes
 			super.setAttributes();
 			
 			//Create root node mask defined by the SVG viewBox
-			var viewBox:String = this.getStyle('viewBox');
+			var viewBox:String = this.getAttribute('viewBox');
 			if (viewBox != null) {
 				var points:Array = viewBox.split(/\s+/);
 				this.addRootMask(points[0], points[1], points[2], points[3]);				
