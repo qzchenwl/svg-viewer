@@ -203,6 +203,10 @@ package com.zavoo.svg.nodes
 								// To Do
 								break;
 								
+							case "rotate":
+								this.rotation = argsArray[0];
+								break;
+								
 							default:
 								trace('Unknown Transformation: ' + command);
 						}
@@ -337,7 +341,12 @@ package com.zavoo.svg.nodes
 						break;
 					case "RECT":
 						this.nodeBeginFill();
-						this.graphics.drawRect(command[1], command[2],command[3], command[4]);
+						if (command.length == 5) {
+							this.graphics.drawRect(command[1], command[2],command[3], command[4]);
+						}
+						else {
+							this.graphics.drawRoundRect(command[1], command[2],command[3], command[4], command[5], command[6]);
+						}
 						this.nodeEndFill();				
 						break;		
 					case "CIRCLE":

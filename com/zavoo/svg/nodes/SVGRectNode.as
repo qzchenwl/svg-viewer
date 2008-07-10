@@ -19,9 +19,23 @@ package com.zavoo.svg.nodes
 			var x:Number = 0; //this.getAttribute('x',0);
 			var y:Number = 0; //this.getAttribute('y',0);
 			var width:Number = this.getAttribute('width',0);
-			var height:Number = this.getAttribute('height',0);			
+			var height:Number = this.getAttribute('height',0);
 			
-			this._graphicsCommands.push(['RECT', x, y, width, height]);
+			var rx:String = this.getAttribute('rx');
+			var ry:String = this.getAttribute('ry');			
+			
+			if ((rx != null) && (ry == null)) {
+				ry = rx;
+			}
+			if ((ry != null) && (rx == null)) {
+				rx = ry;
+			}
+			if (rx != null) {
+				this._graphicsCommands.push(['RECT', x, y, width, height, (Number(rx) * 2), Number(ry) * 2]);
+			}
+			else {
+				this._graphicsCommands.push(['RECT', x, y, width, height]);
+			}
 		}		
 	}
 }
