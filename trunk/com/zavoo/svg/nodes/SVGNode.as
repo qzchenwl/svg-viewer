@@ -2,7 +2,10 @@ package com.zavoo.svg.nodes
 {
 	import com.zavoo.svg.data.SVGColors;
 	
+	import flash.display.CapsStyle;
 	import flash.display.DisplayObject;
+	import flash.display.JointStyle;
+	import flash.display.LineScaleMode;
 	import flash.display.Sprite;
 	import flash.geom.Matrix;
 	
@@ -11,7 +14,8 @@ package com.zavoo.svg.nodes
 	/** Base node extended by all other SVG Nodes **/
 	public class SVGNode extends Sprite
 	{	
-		public static const attributeList:Array = ['stroke', 'stroke-width', 'stroke-dasharray', 'stroke-opacity',
+		public static const attributeList:Array = ['stroke', 'stroke-width', 'stroke-dasharray', 
+										 'stroke-opacity', 'stroke-linecap', 'stroke-linejoin',
 										 'fill', 'fill-opacity', 'opacity', 
 										 'font-family', 'font-size', 'letter-spacing'];
 		
@@ -296,7 +300,34 @@ package com.zavoo.svg.nodes
 				line_width = Number(this.getStyle('stroke-width'));
 			}
 			
-			this.graphics.lineStyle(line_width, line_color, line_alpha);
+			var capsStyle:String = this.getStyle('stroke-linecap');
+			if (capsStyle == 'round'){
+				capsStyle = CapsStyle.ROUND;
+			}
+			if (capsStyle == 'square'){
+				capsStyle = CapsStyle.SQUARE;
+			}
+			else {
+				capsStyle = CapsStyle.NONE;
+			}
+			
+			var jointStyle:String = this.getStyle('stroke-linejoin');
+			if (jointStyle == 'round'){
+				jointStyle = JointStyle.ROUND;
+			}
+			else if (jointStyle == 'bevel'){
+				jointStyle = JointStyle.BEVEL;
+			}
+			else {
+				jointStyle = JointStyle.MITER;
+			}
+			
+			var miterLimit:String = this.getStyle('stroke-miterlimit');
+			if (miterLimit == null) {
+				miterLimit = '4';
+			}
+			
+			this.graphics.lineStyle(line_width, line_color, line_alpha, false, LineScaleMode.NORMAL, capsStyle, jointStyle, Number(miterLimit));
 					
 		}
 		
