@@ -8,22 +8,12 @@ package com.zavoo.svg.nodes
 	
 	
 		
-	/** Base node to be extended by all other SVG Nodes **/
+	/** Base node extended by all other SVG Nodes **/
 	public class SVGNode extends Sprite
 	{	
 		public static const attributeList:Array = ['stroke', 'stroke-width', 'stroke-dasharray', 'stroke-opacity',
 										 'fill', 'fill-opacity', 'opacity', 
 										 'font-family', 'font-size', 'letter-spacing'];
-										 
-		public static const MOUSE_OVER:String = 'node_mouse_over';
-		public static const MOUSE_OUT:String = 'node_mouse_out';
-		public static const MOUSE_CLICK:String = 'node_mouse_click';
-		public static const MOUSE_DOUBLE_CLICK:String = 'node_mouse_double_click';
-		public static const MOUSE_DOWN:String = 'node_mouse_down';
-		public static const MOUSE_UP:String = 'node_mouse_UP';
-		
-		public static const KEY_DOWN:String = 'node_key_down';
-		public static const KEY_UP:String = 'node_key_up';
 		
 		
 		public namespace xlink = 'http://www.w3.org/1999/xlink';
@@ -67,8 +57,7 @@ package com.zavoo.svg.nodes
 			else {
 				this.xml = xml;
 			}
-		}
-		
+		}		
 		
 		
 		/** 
@@ -471,6 +460,7 @@ package com.zavoo.svg.nodes
 			if (this._style.hasOwnProperty(name)) {
 				return this._style[name];
 			}
+			//Opacity should not be inherited
 			else if (name == 'opacity') {
 				return '1';
 			}
