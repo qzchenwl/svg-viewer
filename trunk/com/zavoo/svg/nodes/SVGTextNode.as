@@ -7,6 +7,7 @@ package com.zavoo.svg.nodes
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
+	import flash.text.TextLineMetrics;
 	
 	/** SVG Text element node **/
 	public class SVGTextNode extends SVGNode
@@ -98,6 +99,10 @@ package com.zavoo.svg.nodes
 				
 				this._textBitmap = new Bitmap(bitmapData);
 				this._textBitmap.smoothing = true;
+				
+				var textLineMetrics:TextLineMetrics = this._textField.getLineMetrics(0);
+				this._textBitmap.x = -textLineMetrics.x - 2; //account for 2px gutter
+				this._textBitmap.y =  -textLineMetrics.ascent - 2; //account for 2px gutter
 			}
 		}	
 		
@@ -107,9 +112,8 @@ package com.zavoo.svg.nodes
 		override protected function draw():void {
 			super.draw();
 			if (this._textBitmap != null) {
-				this.addChild(this._textBitmap);				
-			}
-		} 	
-		
+				this.addChild(this._textBitmap);			
+			}			
+		} 			
 	}
 }

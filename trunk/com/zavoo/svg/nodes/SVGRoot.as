@@ -12,7 +12,12 @@ package com.zavoo.svg.nodes
 		/**
 		 * Object to hold node id registration
 		 **/
-		public var _elementById:Object;
+		private var _elementById:Object;
+		
+		/**
+		 * Title of SVG
+		 **/
+		private var _title:String;
 				
 		public function SVGRoot(xml:* = null):void {
 			if (xml != null) {				
@@ -152,6 +157,14 @@ package com.zavoo.svg.nodes
 				Shape(this.mask).graphics.drawRect(xVal, yVal, widthVal, heightVal);
 				Shape(this.mask).graphics.endFill();
 			}
+		}
+		
+		public function get title():String {
+			return this._title;
+		}
+		
+		public function set title(value:String):void {
+			this._title = value;
 		}
 	}
 }

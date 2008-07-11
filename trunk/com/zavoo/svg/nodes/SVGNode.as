@@ -468,7 +468,7 @@ package com.zavoo.svg.nodes
 							this.addChild(new SVGTextNode(childXML));
 							break; 
 						case "title":	
-							//Do Nothing
+							this.addChild(new SVGTitleNode(childXML));
 							break; 
 						case "tspan":						
 							this.addChild(new SVGTspanNode(childXML));
