@@ -24,9 +24,18 @@ package com.zavoo.svg
 		/**
 		 * @private
 		 **/
+		 private function sizeCanvas():void {
+		 	//Scale canvas to match size of  SVG
+			this.width = this._svgRoot.width;
+			this.height = this._svgRoot.height;
+		 }
+		
+		/**
+		 * @private
+		 **/
 		public function set xml(value:XML):void {			
 			this._svgRoot.xml = value;
-						
+			this.sizeCanvas();			
 		}
 		
 		/**
@@ -41,10 +50,7 @@ package com.zavoo.svg
 		 **/
 		public function set scale(scale:Number):void {
 			this._svgRoot.scale = scale;
-
-			//Scale canvas to match size of  SVG
-			this.width = this._svgRoot.width;
-			this.height = this._svgRoot.height; 
+			this.sizeCanvas();			 
 		}
 		
 		/**
@@ -60,6 +66,7 @@ package com.zavoo.svg
 		 **/
 		override public function set scaleX(value:Number):void {
 			this._svgRoot.scaleX = value;	
+			this.sizeCanvas();
 		}
 		
 		override public function get scaleX():Number {
@@ -72,6 +79,7 @@ package com.zavoo.svg
 		 **/
 		override public function set scaleY(value:Number):void {
 			this._svgRoot.scaleY = value;
+			this.sizeCanvas();
 		}
 		
 		override public function get scaleY():Number {
@@ -84,6 +92,7 @@ package com.zavoo.svg
 		 **/
 		override public function set rotation(value:Number):void {
 			this._svgRoot.rotation = value;
+			this.sizeCanvas();
 		}
 		
 		override public function get rotation():Number {
@@ -96,6 +105,7 @@ package com.zavoo.svg
 		 **/
 		override public function set transform(value:Transform):void {
 			this._svgRoot.transform = value;
+			this.sizeCanvas();
 		}
 		
 		override public function get transform():Transform {
@@ -108,6 +118,7 @@ package com.zavoo.svg
 		 **/
 		override public function set filters(value:Array):void {
 			this._svgRoot.filters = value;
+			this.sizeCanvas();
 		}
 		
 		override public function get filters():Array {
