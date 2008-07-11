@@ -114,5 +114,12 @@ package com.zavoo.svg
 			return this._svgRoot.filters;
 		}
 		
+		/**
+		 * Title of SVG
+		 **/
+		public function get title():String {
+			return this._svgRoot.title;
+		}
+		
 	}
 }
