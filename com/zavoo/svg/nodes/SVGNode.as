@@ -1,6 +1,7 @@
 package com.zavoo.svg.nodes
 {
 	import com.zavoo.svg.data.SVGColors;
+	import com.zavoo.svg.nodes.mask.SVGMask;
 	
 	import flash.display.CapsStyle;
 	import flash.display.DisplayObject;
@@ -17,7 +18,7 @@ package com.zavoo.svg.nodes
 		public static const attributeList:Array = ['stroke', 'stroke-width', 'stroke-dasharray', 
 										 'stroke-opacity', 'stroke-linecap', 'stroke-linejoin',
 										 'fill', 'fill-opacity', 'opacity', 
-										 'font-family', 'font-size', 'letter-spacing'];
+										 'font-family', 'font-size', 'letter-spacing', 'filter'];
 		
 		
 		public namespace xlink = 'http://www.w3.org/1999/xlink';
@@ -125,6 +126,11 @@ package com.zavoo.svg.nodes
 			}	
 			
 			this.loadStyle('opacity', 'alpha');
+			
+			var filterName:String = this.getStyle('filter');
+			if (filterName != null) {
+				
+			}
 								
 		}
 		
@@ -419,6 +425,18 @@ package com.zavoo.svg.nodes
 					nodeName = nodeName.toLowerCase();
 					
 					switch(nodeName) {
+						case "animate":
+							this.addChild(new SVGAnimateNode(childXML));
+							break;	
+						case "animatemotion":
+							this.addChild(new SVGAnimateMotionNode(childXML));
+							break;	
+						case "animatecolor":
+							this.addChild(new SVGAnimateColorNode(childXML));
+							break;	
+						case "animatetransform":
+							this.addChild(new SVGAnimateTransformNode(childXML));
+							break;	
 						case "circle":
 							this.addChild(new SVGCircleNode(childXML));
 							break;		
@@ -442,7 +460,10 @@ package com.zavoo.svg.nodes
 							break;
 						case "line": 
 							this.addChild(new SVGLineNode(childXML));
-							break;							
+							break;	
+						case "mask":
+							this.addChild(new SVGMaskNode(childXML));
+							break;						
 						case "metadata":
 							//Do Nothing
 							break;
@@ -460,6 +481,9 @@ package com.zavoo.svg.nodes
 							break;
 						case "rect":
 							this.addChild(new SVGRectNode(childXML));
+							break;
+						case "set":
+							this.addChild(new SVGSetNode(childXML));
 							break;
 						case "symbol":
 							this.addChild(new SVGSymbolNode(childXML));

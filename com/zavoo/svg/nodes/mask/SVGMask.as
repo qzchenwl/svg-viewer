@@ -1,5 +1,8 @@
-package com.zavoo.svg.nodes
+package com.zavoo.svg.nodes.mask
 {
+	import com.zavoo.svg.nodes.SVGClipPathNode;
+	import com.zavoo.svg.nodes.SVGNode;
+	
 	public class SVGMask extends SVGNode
 	{
 		private var _revision:uint = 0;
