@@ -133,6 +133,10 @@ package com.zavoo.svg.nodes
 				var w:String = this.getAttribute('width');
 				var h:String = this.getAttribute('height');
 				
+				if (w.match('%') || h.match('%')) {
+					return;
+				}
+				
 				if ((w != null) && (h != null)) {
 					this.addRootMask(0, 0, SVGColors.cleanNumber(w), SVGColors.cleanNumber(h));
 				}

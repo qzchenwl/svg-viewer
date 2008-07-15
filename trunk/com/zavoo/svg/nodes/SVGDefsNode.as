@@ -23,8 +23,10 @@ package com.zavoo.svg.nodes
 		override protected function registerId():void {
 			for each (var defNode:XML in this._xml.children()) {
 				var id:String = defNode.@id;
-				if (id != "") {
-					this.svgRoot.registerElement(id, this);
+				if (defNode.localName().toString().toLocaleLowerCase() != 'filter') {
+					if (id != "") {
+						this.svgRoot.registerElement(id, this);
+					}
 				}
 			}
 		}
