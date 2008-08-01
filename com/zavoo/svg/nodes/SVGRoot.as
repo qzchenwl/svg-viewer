@@ -19,10 +19,8 @@ package com.zavoo.svg.nodes
 		 **/
 		private var _title:String;
 				
-		public function SVGRoot(xml:* = null):void {
-			if (xml != null) {				
-				super(XML(xml)); 		
-			}
+		public function SVGRoot(xml:XML = null):void {						
+			super(XML(xml)); 					
 		}	
 		
 		/**
@@ -41,22 +39,14 @@ package com.zavoo.svg.nodes
 		}
 		
 		/**
-		 * Set _xml
-		 * Clear all children
-		 * Clear _elementById
-		 * Parse and render SVG XML
+		 * Set super._xml
+		 * Create new _elementById object
 		 **/
 		public override function set xml(value:XML):void {
-			default xml namespace = svg;			
-			this._xml = value;	
-			
-			this.clearChildren();
-						
-			this._elementById = new Object();
-			
-			this.parse();			
-			this.refreshGraphics();						
-		}	
+			default xml namespace = svg;
+			this._elementById = new Object();			
+			super.xml = value;	
+		} 	
 		
 		/**
 		 * Register a node
@@ -133,11 +123,10 @@ package com.zavoo.svg.nodes
 				var w:String = this.getAttribute('width');
 				var h:String = this.getAttribute('height');
 				
-				if (w.match('%') || h.match('%')) {
-					return;
-				}
-				
 				if ((w != null) && (h != null)) {
+					if (w.match('%') || h.match('%')) {
+						return;
+					}
 					this.addRootMask(0, 0, SVGColors.cleanNumber(w), SVGColors.cleanNumber(h));
 				}
 			}

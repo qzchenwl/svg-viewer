@@ -60,10 +60,8 @@ package com.zavoo.svg.nodes
 			}
 			this._revision = this._symbol.revision;
 			
-			this.clearChildren();
-			
-			this.parse();			
-			this.refreshGraphics();
+			this.invalidateDisplay();
+			this.redrawNode(null);
 		}
 		
 		/**
