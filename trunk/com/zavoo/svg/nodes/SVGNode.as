@@ -8,6 +8,7 @@ package com.zavoo.svg.nodes
 	import flash.display.JointStyle;
 	import flash.display.LineScaleMode;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.geom.Matrix;
 	
 	
@@ -47,6 +48,12 @@ package com.zavoo.svg.nodes
 		 **/
 		protected var _style:Object;		
 		
+		/**
+		 * If true, redraw sprite graphics
+		 * Set to true on any change to xml
+		 **/
+		protected var _invalidDisplay:Boolean = false;
+		
 		
 		/**
 		 * Constructor
@@ -56,12 +63,15 @@ package com.zavoo.svg.nodes
 		 * @return void.		
 		 */
 		public function SVGNode(xml:XML = null):void {
-			if (xml == null) {
+			
+			/* if (xml == null) {
 				this.xml = new XML('<dummy/>');
 			}
-			else {
+			else { */
 				this.xml = xml;
-			}
+			//}
+			
+			this.addEventListener(Event.ENTER_FRAME, redrawNode);
 		}		
 		
 		
@@ -553,37 +563,40 @@ package com.zavoo.svg.nodes
 		/**
 		 * Remove all child nodes
 		 **/		
-		protected function clearChildren():void {
-			var nChildren:int = this.numChildren;
-			for(var i:int = 0; i < nChildren; i++) {
+		protected function clearChildren():void {			
+			while(this.numChildren) {
 				this.removeChildAt(0);
 			}
 		}
 		
+				
 		/**
-		 * Clear and redraw graphics
-		 **/ 
-		public function refreshGraphics():void {
-			this.setAttributes();						
-			this.generateGraphicsCommands();	
-			this.transformNode();		
-			this.draw();
-			
-			this.refreshChildGraphics();
+		 * Force a redraw of a node and its children
+		 **/
+		public function invalidateDisplay():void {
+			this._invalidDisplay = true;
 		}
 		
 		/**
-		 * Call refreshGraphics() on child nodes
+		 * Triggers on ENTER_FRAME event
+		 * Redraws node graphics if _invalidDisplay == true
 		 **/
-		public function refreshChildGraphics():void {
-			for each (var childNode:DisplayObject in this.children) {
-				if (childNode is SVGNode) {
-					SVGNode(childNode).refreshGraphics();
-				}
+		protected function redrawNode(event:Event):void {
+			if (this._invalidDisplay
+				&& (this._xml != null)) {	
+				
+				this.clearChildren();
+				this.graphics.clear();		
+				
+				this.parse();
+				this.setAttributes();						
+				this.generateGraphicsCommands();	
+				this.transformNode();		
+				this.draw();
+				
+				this._invalidDisplay = false;			
 			}
 		}
-		
-		
 				
 		//Getters / Setters
 		
@@ -614,8 +627,7 @@ package com.zavoo.svg.nodes
 		**/		
 		public function set xml(xml:XML):void {		
 			this._xml = xml;
-			this.parse();
-			//this.transformNode();
+			this.invalidateDisplay();
 		}
 		
 		/**
@@ -662,7 +674,7 @@ package com.zavoo.svg.nodes
 				updateStyleString(name, value);
 			}
 			
-			this.refreshGraphics();
+			this.invalidateDisplay();
 		}
 		
 		/**

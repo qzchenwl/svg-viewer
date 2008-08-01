@@ -3,6 +3,10 @@ package com.zavoo.svg.nodes.mask
 	import com.zavoo.svg.nodes.SVGClipPathNode;
 	import com.zavoo.svg.nodes.SVGNode;
 	
+	/**
+	 * Class used internally to create a node mask.
+	 * It is not the same as an SVG mask node
+	 **/
 	public class SVGMask extends SVGNode
 	{
 		private var _revision:uint = 0;
@@ -32,11 +36,8 @@ package com.zavoo.svg.nodes.mask
 			this._xml = this._clipPath.xml;
 			this._revision = this._clipPath.revision;
 			
-			this.clearChildren();
-			//this.mask = null;
-			
-			this.parse();
-			this.refreshGraphics();
+			this.invalidateDisplay();
+			this.redrawNode(null);
 		}
 		
 		/**
