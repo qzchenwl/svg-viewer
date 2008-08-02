@@ -28,7 +28,7 @@ package com.zavoo.svg.nodes
 		 * If _symbol revision has changed, reload element
 		 * Call SVGNode.redrawNode()
 		 **/
-		override protected function redrawNode(event:Event=null):void {
+		override protected function redrawNode(event:Event):void {
 			if (this._symbol == null) {
 				var href:String = this._xml.@xlink::href;
 				href = href.replace(/^#/,'');
@@ -40,9 +40,9 @@ package com.zavoo.svg.nodes
 			if ((this._symbol != null) 
 				&&(this._symbol.revision != this._revision)) {
 				refreshSymbol();
-			}
+			}		
 			
-			super.redrawNode();
+			super.redrawNode(event);	
 		} 
 		
 		/**

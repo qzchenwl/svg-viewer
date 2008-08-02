@@ -3,6 +3,7 @@ package com.zavoo.svg
 	
 	import com.zavoo.svg.nodes.SVGRoot;
 	
+	import flash.events.Event;
 	import flash.geom.Transform;
 	
 	import mx.containers.Canvas;
@@ -19,15 +20,19 @@ package com.zavoo.svg
 			super();
 			this._svgRoot = new SVGRoot(null);
 			this.rawChildren.addChild(this._svgRoot);
+			
+			this.addEventListener(Event.ENTER_FRAME, sizeCanvas);
 		}
 		
 		/**
 		 * @private
 		 **/
-		 private function sizeCanvas():void {
+		 private function sizeCanvas(event:Event = null):void {
 		 	//Scale canvas to match size of  SVG
-			this.width = this._svgRoot.width;
-			this.height = this._svgRoot.height;
+		 	if (this._svgRoot != null) {
+				this.width = this._svgRoot.width;
+				this.height = this._svgRoot.height;
+		 	}
 		 }
 		
 		/**

@@ -187,6 +187,9 @@ package com.zavoo.svg.data
 		 * @return Numeric value of color
 		 **/
 		static public function getColor(color:String):Number {
+			if (color == null) {
+				return null;
+			}
 			if(color.match(/^#/)) {
 				color = color.replace('#', '0x');
 				return parseInt(color);

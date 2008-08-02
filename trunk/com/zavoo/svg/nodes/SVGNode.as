@@ -86,7 +86,7 @@ package com.zavoo.svg.nodes
 		 **/
 		protected function setAttributes():void {
 			
-			//this.registerId();
+			this.registerId();
 			
 			var xmlList:XMLList;
 			
@@ -410,10 +410,12 @@ package com.zavoo.svg.nodes
 		/**
 		 * If node has an "id" attribute, register it with the root node
 		 **/
-		protected function registerId():void {			
-			var id:String = this._xml.@id;
-			if (id != "") {
-				this.svgRoot.registerElement(id, this);
+		protected function registerId():void {		
+			if (!this._isClone) {	
+				var id:String = this._xml.@id;
+				if (id != "") {
+					this.svgRoot.registerElement(id, this);
+				}
 			}			
 		}
 		
@@ -458,6 +460,9 @@ package com.zavoo.svg.nodes
 							break;
 						case "ellipse":
 							this.addChild(new SVGEllipseNode(childXML));
+							break;
+						case "filter":
+							this.addChild(new SVGFilterNode(childXML));
 							break;
 						case "g":						
 							this.addChild(new SVGGroupNode(childXML));
@@ -581,7 +586,7 @@ package com.zavoo.svg.nodes
 		 * Triggers on ENTER_FRAME event
 		 * Redraws node graphics if _invalidDisplay == true
 		 **/
-		protected function redrawNode(event:Event = null):void {
+		protected function redrawNode(event:Event):void {
 			if (this._invalidDisplay) {
 				
 				this._invalidDisplay = false;
@@ -593,6 +598,11 @@ package com.zavoo.svg.nodes
 					this.graphics.clear();		
 					
 					this.parse();
+					
+					if (this is SVGUseNode) {
+						this.isClone = true;
+					}
+					
 					this.setAttributes();						
 					this.generateGraphicsCommands();	
 					this.transformNode();		
