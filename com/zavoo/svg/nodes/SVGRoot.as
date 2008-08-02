@@ -12,7 +12,7 @@ package com.zavoo.svg.nodes
 		/**
 		 * Object to hold node id registration
 		 **/
-		private var _elementById:Object;
+		public var _elementById:Object;
 		
 		/**
 		 * Title of SVG

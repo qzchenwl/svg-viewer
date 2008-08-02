@@ -1,5 +1,7 @@
 package com.zavoo.svg.nodes
 {
+	import flash.events.Event;
+	
 	/** 
 	 * Contains drawing instructions used by SVGUseNode
 	 * It is not rendered directly
@@ -20,7 +22,7 @@ package com.zavoo.svg.nodes
 			return null;
 		}
 		
-		override protected function registerId():void {
+		override protected function registerId(event:Event):void {
 			for each (var defNode:XML in this._xml.children()) {
 				var id:String = defNode.@id;
 				if (defNode.localName().toString().toLocaleLowerCase() != 'filter') {
