@@ -63,6 +63,12 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
 <tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="SVGNode.html#isClone">isClone</a> : Boolean<div class="summaryTableDescription">
+   Set if a node is a copy such as under a Use node
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
+</tr>
+<tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="SVGNode.html#svgRoot">svgRoot</a> : <a href="../nodes/SVGRoot.html">SVGRoot</a>
 <div class="summaryTableDescription">
    Recursively searches for the root node
@@ -96,6 +102,19 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedProtectedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="SVGNode.html#_graphicsCommands">_graphicsCommands</a> : Array<div class="summaryTableDescription">
    List of graphics commands to draw node.</div>
+</td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="SVGNode.html#_invalidDisplay">_invalidDisplay</a> : Boolean = false<div class="summaryTableDescription">
+   If true, redraw sprite graphics
+   Set to true on any change to xml
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="SVGNode.html#_isClone">_isClone</a> : Boolean = false<div class="summaryTableDescription">
+   Set to true if node is a copy from a Symbole, Def, or other node
+   </div>
 </td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
 </tr>
 <tr class="hideInheritedProtectedProperty">
@@ -145,18 +164,9 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="SVGNode.html#refreshChildGraphics()">refreshChildGraphics</a>():void</div>
+<a class="signatureLink" href="SVGNode.html#invalidateDisplay()">invalidateDisplay</a>():void</div>
 <div class="summaryTableDescription">
-   Call refreshGraphics() on child nodes
-   </div>
-</td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
-</tr>
-<tr class="hideInheritedMethod">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="SVGNode.html#refreshGraphics()">refreshGraphics</a>():void</div>
-<div class="summaryTableDescription">
-   Clear and redraw graphics
+   Force a redraw of a node and its children
    </div>
 </td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
 </tr>
@@ -236,6 +246,16 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedProtectedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
+<a class="signatureLink" href="SVGNode.html#loadStyle()">loadStyle</a>(name:String, field:String = null):void</div>
+<div class="summaryTableDescription">
+   Load an SVG style into the current node
+   
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
 <a class="signatureLink" href="SVGNode.html#nodeBeginFill()">nodeBeginFill</a>():void</div>
 <div class="summaryTableDescription"> 
    Called at the start of drawing an SVG element.</div>
@@ -261,7 +281,17 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedProtectedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="SVGNode.html#registerId()">registerId</a>():void</div>
+<a class="signatureLink" href="SVGNode.html#redrawNode()">redrawNode</a>(event:Event):void</div>
+<div class="summaryTableDescription">
+   Triggers on ENTER_FRAME event
+   Redraws node graphics if _invalidDisplay == true
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="SVGNode.html#registerId()">registerId</a>(event:Event):void</div>
 <div class="summaryTableDescription">
    If node has an "id" attribute, register it with the root node
    </div>
@@ -282,6 +312,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="SVGNode.html#setAttributes()">setAttributes</a>():void</div>
 <div class="summaryTableDescription">
    Load attributes/styling from the XML.</div>
+</td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="SVGNode.html#setupFilters()">setupFilters</a>():void</div>
+<div class="summaryTableDescription">
+   Add any assigned filters to node
+   </div>
 </td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
 </tr>
 <tr class="hideInheritedProtectedMethod">
@@ -312,38 +351,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="hideInheritedConstant">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="SVGNode.html#attributeList">attributeList</a> : Array<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
-</tr>
-<tr class="hideInheritedConstant">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="SVGNode.html#KEY_DOWN">KEY_DOWN</a> : String = "node_key_down"<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
-</tr>
-<tr class="hideInheritedConstant">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="SVGNode.html#KEY_UP">KEY_UP</a> : String = "node_key_up"<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
-</tr>
-<tr class="hideInheritedConstant">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="SVGNode.html#MOUSE_CLICK">MOUSE_CLICK</a> : String = "node_mouse_click"<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
-</tr>
-<tr class="hideInheritedConstant">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="SVGNode.html#MOUSE_DOUBLE_CLICK">MOUSE_DOUBLE_CLICK</a> : String = "node_mouse_double_click"<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
-</tr>
-<tr class="hideInheritedConstant">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="SVGNode.html#MOUSE_DOWN">MOUSE_DOWN</a> : String = "node_mouse_down"<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
-</tr>
-<tr class="hideInheritedConstant">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="SVGNode.html#MOUSE_OUT">MOUSE_OUT</a> : String = "node_mouse_out"<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
-</tr>
-<tr class="hideInheritedConstant">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="SVGNode.html#MOUSE_OVER">MOUSE_OVER</a> : String = "node_mouse_over"<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
-</tr>
-<tr class="hideInheritedConstant">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="SVGNode.html#MOUSE_UP">MOUSE_UP</a> : String = "node_mouse_UP"<div class="summaryTableDescription">[static]</div>
 </td><td class="summaryTableOwnerCol"><a href="SVGNode.html">SVGNode</a></td>
 </tr>
 </table>
