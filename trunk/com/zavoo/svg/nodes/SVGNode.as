@@ -45,7 +45,7 @@ package com.zavoo.svg.nodes
 		 * Set by setAttributes()
 		 * Used by getStyle()
 		 **/
-		protected var _style:Object;		
+		protected var _style:Object;
 		
 		/**
 		 * If true, redraw sprite graphics
@@ -67,10 +67,10 @@ package com.zavoo.svg.nodes
 		 *
 		 * @return void.		
 		 */
-		public function SVGNode(xml:XML = null):void {					
+		public function SVGNode(xml:XML = null):void {			
 			this.xml = xml;			
-		}		
-		
+			this.addEventListener(Event.ADDED, registerId);			
+		}			
 		
 		/** 
 		 * Called to generate AS3 graphics commands from the SVG instructions		    
@@ -84,9 +84,7 @@ package com.zavoo.svg.nodes
 		 * Attributes are applied in functions called later.
 		 * Creates a sprite mask if a clip-path is given.
 		 **/
-		protected function setAttributes():void {
-			
-			this.registerId();
+		protected function setAttributes():void {			
 			
 			var xmlList:XMLList;
 			
@@ -132,12 +130,7 @@ package com.zavoo.svg.nodes
 				this.loadAttribute('rotate', 'rotation');
 			}	
 			
-			this.loadStyle('opacity', 'alpha');
-			
-			var filterName:String = this.getStyle('filter');
-			if (filterName != null) {
-				
-			}
+			this.loadStyle('opacity', 'alpha');			
 								
 		}
 		
@@ -410,7 +403,8 @@ package com.zavoo.svg.nodes
 		/**
 		 * If node has an "id" attribute, register it with the root node
 		 **/
-		protected function registerId():void {		
+		protected function registerId(event:Event):void {
+			this.removeEventListener(Event.ADDED, registerId);		
 			if (!this._isClone) {	
 				var id:String = this._xml.@id;
 				if (id != "") {
@@ -587,6 +581,10 @@ package com.zavoo.svg.nodes
 		 * Redraws node graphics if _invalidDisplay == true
 		 **/
 		protected function redrawNode(event:Event):void {
+			if (this.parent == null) {
+				return;
+			}		
+			
 			if (this._invalidDisplay) {
 				
 				this._invalidDisplay = false;
@@ -606,8 +604,25 @@ package com.zavoo.svg.nodes
 					this.setAttributes();						
 					this.generateGraphicsCommands();	
 					this.transformNode();		
-					this.draw();							
+					this.draw();	
+					
+					this.setupFilters();										
 				}	
+			}
+		}
+		
+		/**
+		 * Add any assigned filters to node
+		 **/
+		protected function setupFilters():void {
+			var filterName:String = this.getStyle('filter');
+			if (filterName != null) {
+				var matches:Array = filterName.match(/url\(#([^\)]+)\)/si);
+				filterName = matches[1];
+				var filterNode:SVGFilterNode = this.svgRoot.getElement(filterName);
+				if (filterNode != null) {
+					this.filters = filterNode.getFilters();
+				}
 			}
 		}
 				

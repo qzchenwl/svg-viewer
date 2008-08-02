@@ -3,6 +3,8 @@ package com.zavoo.svg.nodes.mask
 	import com.zavoo.svg.nodes.SVGClipPathNode;
 	import com.zavoo.svg.nodes.SVGNode;
 	
+	import flash.events.Event;
+	
 	/**
 	 * Class used internally to create a node mask.
 	 * It is not the same as an SVG mask node
@@ -68,7 +70,7 @@ package com.zavoo.svg.nodes.mask
 		/**
 		 * SVGMask is a copy, do not register
 		 **/
-		override protected function registerId():void {
+		override protected function registerId(event:Event):void {
 			//Do Nothing		
 		}
 	}

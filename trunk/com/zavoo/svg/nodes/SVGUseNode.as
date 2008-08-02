@@ -74,7 +74,7 @@ package com.zavoo.svg.nodes
 		/**
 		 * SVGUseNode is a copy, do not register
 		 **/
-		override protected function registerId():void {
+		override protected function registerId(event:Event):void {
 			//Do Nothing		
 		}
 		
