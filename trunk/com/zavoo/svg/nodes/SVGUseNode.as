@@ -1,5 +1,7 @@
 package com.zavoo.svg.nodes
 {
+	import flash.events.Event;
+	
 	public class SVGUseNode extends SVGNode
 	{		
 		
@@ -24,9 +26,9 @@ package com.zavoo.svg.nodes
 		
 		/**
 		 * If _symbol revision has changed, reload element
-		 * Call SVGNode.draw()
+		 * Call SVGNode.redrawNode()
 		 **/
-		override protected function draw():void {
+		override protected function redrawNode(event:Event=null):void {
 			if (this._symbol == null) {
 				var href:String = this._xml.@xlink::href;
 				href = href.replace(/^#/,'');
@@ -35,33 +37,29 @@ package com.zavoo.svg.nodes
 
 			}
 			
-			if (this._symbol.revision != this._revision) {
+			if ((this._symbol != null) 
+				&&(this._symbol.revision != this._revision)) {
 				refreshSymbol();
 			}
 			
-			super.draw();
-		}
+			super.redrawNode();
+		} 
 		
 		/**
 		 * Load _symbol child XML as this nodes child XML
-		 * Remove all children
-		 * Parse SVG XML
-		 * Draw graphics
+		 * Call super
 		 **/
 		private function refreshSymbol():void {		
 			if (this._symbol is SVGDefsNode) {
 				var href:String = this._xml.@xlink::href;
 				href = href.replace(/^#/,'');
-				this._xml.setChildren(SVGDefsNode(this._symbol).getDef(href));				
+				this.xml.setChildren(SVGDefsNode(this._symbol).getDef(href));				
 			}
 			else {
-				this._xml.setChildren(this._symbol.xml.children());
+				this.xml.setChildren(this._symbol.xml.children());
 				
 			}
 			this._revision = this._symbol.revision;
-			
-			this.invalidateDisplay();
-			this.redrawNode(null);
 		}
 		
 		/**
