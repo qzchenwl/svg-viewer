@@ -37,7 +37,7 @@ package com.zavoo.svg.nodes.mask
 			this._revision = this._clipPath.revision;
 			
 			this.invalidateDisplay();
-			this.redrawNode(null);
+			this.redrawNode();
 		}
 		
 		/**

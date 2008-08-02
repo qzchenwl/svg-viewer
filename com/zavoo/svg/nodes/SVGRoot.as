@@ -55,10 +55,8 @@ package com.zavoo.svg.nodes
 		 * 
 		 * @param node node to be registered
 		 **/
-		public function registerElement(id:String, node:*):void {
-			if (!this._elementById.hasOwnProperty(id)){
-				this._elementById[id] = node;
-			}
+		public function registerElement(id:String, node:*):void {							
+			this._elementById[id] = node;			
 		}
 		
 		/**

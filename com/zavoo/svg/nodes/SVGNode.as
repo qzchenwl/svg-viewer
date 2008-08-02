@@ -4,7 +4,6 @@ package com.zavoo.svg.nodes
 	import com.zavoo.svg.nodes.mask.SVGMask;
 	
 	import flash.display.CapsStyle;
-	import flash.display.DisplayObject;
 	import flash.display.JointStyle;
 	import flash.display.LineScaleMode;
 	import flash.display.Sprite;
@@ -54,6 +53,12 @@ package com.zavoo.svg.nodes
 		 **/
 		protected var _invalidDisplay:Boolean = false;
 		
+		/**
+		 * Set to true if node is a copy from a Symbole, Def, or other node
+		 **/
+		protected var _isClone:Boolean = false;
+		 
+		
 		
 		/**
 		 * Constructor
@@ -62,15 +67,9 @@ package com.zavoo.svg.nodes
 		 *
 		 * @return void.		
 		 */
-		public function SVGNode(xml:XML = null):void {
+		public function SVGNode(xml:XML = null):void {		
 			
-			/* if (xml == null) {
-				this.xml = new XML('<dummy/>');
-			}
-			else { */
-				this.xml = xml;
-			//}
-			
+			this.xml = xml;
 			this.addEventListener(Event.ENTER_FRAME, redrawNode);
 		}		
 		
@@ -89,7 +88,7 @@ package com.zavoo.svg.nodes
 		 **/
 		protected function setAttributes():void {
 			
-			this.registerId();
+			//this.registerId();
 			
 			var xmlList:XMLList;
 			
@@ -581,7 +580,7 @@ package com.zavoo.svg.nodes
 		 * Triggers on ENTER_FRAME event
 		 * Redraws node graphics if _invalidDisplay == true
 		 **/
-		protected function redrawNode(event:Event):void {
+		protected function redrawNode(event:Event = null):void {
 			if (this._invalidDisplay
 				&& (this._xml != null)) {	
 				
@@ -657,6 +656,25 @@ package com.zavoo.svg.nodes
 			return this._graphicsCommands;
 		}
 		
+		/**
+		 * @private
+		 **/
+		public function set isClone(value:Boolean):void {
+			this._isClone = value;
+			for (var i:uint = 0; i < this.numChildren; i++) {
+				if (this.getChildAt(i) is SVGNode) {
+					SVGNode(this.getChildAt(i)).isClone = value;
+				}
+			}
+		} 
+		
+		/**
+		 * Set if a node is a copy such as under a Use node
+		 **/
+		public function get isClone():Boolean {
+			return this._isClone;
+		}
+		
 		
 		/**
 		 * Set node style to new value
@@ -674,7 +692,15 @@ package com.zavoo.svg.nodes
 				updateStyleString(name, value);
 			}
 			
-			this.invalidateDisplay();
+			//For some attribute changes we do not need to redraw the node, just update the property
+			var props:Object = {x:'x', y:'y', rotate:'rotation', opacity:'alpha'} //SVG Prop:Node Prop
+			
+			if (props.hasOwnProperty(name)) {
+				this[props[name]] = SVGColors.cleanNumber(value);
+			}
+			else {
+				this.invalidateDisplay();
+			}
 		}
 		
 		/**
@@ -685,21 +711,18 @@ package com.zavoo.svg.nodes
 		 * @param value New value for style
 		 **/ 
 		private function updateStyleString(name:String, value:String):void {
-			var found:Boolean = false;
+			this._style[name] = value;
 			
-			var styleString:String = this._xml.@style;
-			var newStyleString:String = name + ':' + value;
+			var newStyleString:String = '';
 			
-			var styles:Array = styleString.split(';');
-			for each(var style:String in styles) {
-				var styleSet:Array = style.split(':');
-				if (styleSet.length == 2) {
-					if (styleSet[0] != name) {						
-						newStyleString += ';' + style;						
-					} 
+			for (var key:String in this._style) {
+				if (newStyleString.length > 0) {
+					newStyleString += ';';
 				}
-			}			
-			this._xml.@style = newStyleString;
+				newStyleString += key + ':' + this._style[key];
+			}
+			
+			this._xml.@style = newStyleString;		
 			
 		}
 		
