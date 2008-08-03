@@ -1,8 +1,8 @@
 package com.zavoo.svg.nodes
 {
-	import caurina.transitions.Tweener;
 	
 	import com.zavoo.svg.data.SVGColors;
+	import com.zavoo.svg.utils.NodeTween;
 	
 	import flash.events.Event;
 	
@@ -14,28 +14,39 @@ package com.zavoo.svg.nodes
 		
 		override protected function redrawNode(event:Event):void {
 			if (this.parent != null) {
-				Tweener.removeTweens(this.parent);
+				NodeTween.removeTweens(SVGNode(this.parent));
 			}
-			
-			var tweenParameters:Object = new Object();
-			
+						
 			var attributeName:String = this.getAttribute('attributeName');
 				
 			var startVal:String = this.getAttribute('from');			
-			if (startVal != null) {
-				SVGNode(this.parent).setStyle(attributeName, startVal);
+			if (!startVal) {
+				startVal = SVGNode(this.parent).getStyle(attributeName)
 			}
+			var startValInt:int = SVGColors.cleanNumber(startVal);			
 			
 			var endVal:String = this.getAttribute('to');
+			var endValInt:int = SVGColors.cleanNumber(endVal);
 			
-			
-			var begin:String = this.getAttribute('begin');			
+			var begin:String = this.getAttribute('begin');	
+			var beginInt:int = SVGColors.cleanNumber(begin);
+					
 			var duration:String = this.getAttribute('dur');
+			var durationInt:int =  SVGColors.cleanNumber(duration);
+			
+			var repeat:String = this.getAttribute('repeatCount');
+			var repeatInt:int;
+			
+			if (repeat == 'indefinite') {
+				repeatInt = NodeTween.REPEAT_INFINITE;
+			}
+			else {
+				repeatInt = SVGColors.cleanNumber(repeat);
+			}
+			
+			NodeTween.addTween(SVGNode(this.parent), attributeName, beginInt, durationInt, startValInt, endValInt, repeatInt);
 			
 			
-			
-			
-			Tweener.addTween(this.parent, tweenParameters);
 		}
 		
 		private function timeToSeconds(value:String):Number {
