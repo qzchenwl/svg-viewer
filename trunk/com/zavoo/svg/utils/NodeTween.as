@@ -13,36 +13,36 @@ package com.zavoo.svg.utils
 		public static const REPEAT_INFINITE:int = -1;
 		
 		//static
-		private static var tweens:Dictionary = new Dictionary();
-		private static var listening:Boolean = false;
+		public static var tweens:Dictionary = new Dictionary();
+		public static var listening:Boolean = false;
 		
-		public static function addTween (target:SVGNode, field:String, delay:Number, duration:Number, fromVal:Number, toVal:Number, repeat:int):NodeTween {
+		public static function addTween (target:SVGNode, field:String, delay:Number, duration:Number, end:Number, fromVal:Number, toVal:Number, repeat:int):NodeTween {
 						
-			var nodeTween:NodeTween = new NodeTween(target, field, delay, duration, fromVal, toVal, repeat);
+			var nodeTween:NodeTween = new NodeTween(target, field, delay, duration, end, fromVal, toVal, repeat);
 			
 			if (!listening) {
 				Application.application.stage.addEventListener(Event.ENTER_FRAME, renderTweens);
 				listening = true;
 			}
 			
-			if (tweens[target] is undefined) {
-				tweens[target] = {field:nodeTween};
+			if (tweens[target] == undefined) {
+				tweens[target] = new Object();
 			}
-			else {
-				
+			else {				
 				removeTween(target,field);
-				tweens[target][field] = nodeTween;
 			}
+			
+			tweens[target][field] = nodeTween;
 			
 			return nodeTween;
 		}
 		
 		public static function removeTween(target:SVGNode, field:String):void {
-			if ( Object(tweens[target]).hasOwnProperty(field) ) {
+			if ( tweens[target][field] != undefined ) {
 				delete tweens[target][field];
 			}
 			
-			for each (var node:SVGNode in tweens[target]) {
+			for each (var object:Object in tweens[target]) {
 				return;
 			}
 			
@@ -66,9 +66,10 @@ package com.zavoo.svg.utils
 		}
 		
 		public static function isTweeningField(target:SVGNode, field:String):Boolean {
-			if (tweens[target][field] is undefined) {
+			if ((tweens[target] == undefined) 
+				|| (tweens[target][field] == undefined)) {
 				return false;
-			}
+			} 
 			return true;
 		}
 		
@@ -110,14 +111,14 @@ package com.zavoo.svg.utils
 		
 		
 		
-		public function NodeTween(target:SVGNode, field:String, delay:Number, duration:Number, fromVal:Number, toVal:Number, repeat:int) {
+		public function NodeTween(target:SVGNode, field:String, delay:Number, duration:Number, end:Number, fromVal:Number, toVal:Number, repeat:int) {
 			this._target = target;
 			this._field = field;
 			
 			//Convert to milliseconds
 			this._delay = delay * 1000;
 			this._duration = duration * 1000;
-			this._end = this._delay + this._duration;
+			this._end = end * 1000;
 			
 			this._fromVal = fromVal;
 			this._toVal = toVal;
@@ -132,6 +133,7 @@ package com.zavoo.svg.utils
 			var time:int = getTimer();
 			
 			var timeLapsed:int = time - this._startTime;
+			
 			
 			if (timeLapsed < this._delay) {
 				return;
@@ -148,15 +150,17 @@ package com.zavoo.svg.utils
 			}
 			else {
 				newVal = this._toVal;
-				if (this._repeat == 0) {
-					removeTween(this._target, this._field);
-				}
-				else {
-					if (this._repeat > 0) {
-						this._repeat--;
+				if (timeLapsed > this._end) {
+					if (this._repeat == 0) {
+						removeTween(this._target, this._field);
 					}
-					
-					this._startTime += this._delay + this._duration;
+					else {
+						if (this._repeat > 0) {
+							this._repeat--;
+						}
+						
+						this._startTime += this._delay + this._duration;
+					}
 				}
 			}
 			

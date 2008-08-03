@@ -44,7 +44,8 @@ package com.zavoo.svg.nodes
 		 **/
 		public override function set xml(value:XML):void {
 			default xml namespace = svg;
-			this._elementById = new Object();			
+			this._elementById = new Object();	
+			this.clearChildren();		
 			super.xml = value;	
 		} 	
 		

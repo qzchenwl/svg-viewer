@@ -10,7 +10,7 @@ package com.zavoo.svg.nodes
 		/**
 		 * Generate graphics commands to draw an ellipse
 		 **/
-		protected override function generateGraphicsCommands():void {
+		override protected function generateGraphicsCommands():void {
 			
 			this._graphicsCommands = new  Array();
 			
@@ -20,6 +20,6 @@ package com.zavoo.svg.nodes
 			var ry:Number = this.getAttribute('ry',0);
 			
 			this._graphicsCommands.push(['ELLIPSE', (cx - rx), (cy - ry), (rx * 2), (ry * 2)]);			
-		}				
+		}					
 	}
 }

@@ -338,7 +338,7 @@ package com.zavoo.svg.nodes
 		}
 		
 		/** 
-		 * Called at the end of drawing an SVG element		 * 
+		 * Called at the end of drawing an SVG element
 		 **/
 		protected function nodeEndFill():void {
 			this.graphics.endFill();
@@ -598,10 +598,12 @@ package com.zavoo.svg.nodes
 				
 				if (this._xml != null) {	
 				
-					this.clearChildren();
+					//this.clearChildren();
 					this.graphics.clear();		
 					
-					this.parse();
+					if (this.numChildren == 0) {
+						this.parse();
+					}
 					
 					if (this is SVGUseNode) {
 						this.isClone = true;
@@ -612,7 +614,7 @@ package com.zavoo.svg.nodes
 					this.transformNode();		
 					this.draw();	
 					
-					this.setupFilters();										
+					this.setupFilters();								
 				}	
 			}
 		}
@@ -622,12 +624,15 @@ package com.zavoo.svg.nodes
 		 **/
 		protected function setupFilters():void {
 			var filterName:String = this.getStyle('filter');
-			if (filterName != null) {
+			if ((filterName != null)
+				&& (filterName != '')) {
 				var matches:Array = filterName.match(/url\(#([^\)]+)\)/si);
-				filterName = matches[1];
-				var filterNode:SVGFilterNode = this.svgRoot.getElement(filterName);
-				if (filterNode != null) {
-					this.filters = filterNode.getFilters();
+				if (matches.length > 0) {
+					filterName = matches[1];
+					var filterNode:SVGFilterNode = this.svgRoot.getElement(filterName);
+					if (filterNode != null) {
+						this.filters = filterNode.getFilters();
+					}
 				}
 			}
 		}
@@ -720,21 +725,15 @@ package com.zavoo.svg.nodes
 		 **/
 		public function setStyle(name:String, value:String):void {
 			//Stick in the main attribute if it exists
-			if (this.getAttribute(name) != null) {
-				this._xml.@[name] = value;
+			var attribute:String = this.getAttribute(name);
+			if (attribute != null) {
+				if (attribute != value) {
+					this._xml.@[name] = value;
+					this.invalidateDisplay();
+				}
 			}
 			else {
 				updateStyleString(name, value);
-			}
-			
-			//For some attribute changes we do not need to redraw the node, just update the property
-			var props:Object = {x:'x', y:'y', rotate:'rotation', opacity:'alpha'} //SVG Prop:Node Prop
-			
-			if (props.hasOwnProperty(name)) {
-				this[props[name]] = SVGColors.cleanNumber(value);
-			}
-			else {
-				this.invalidateDisplay();
 			}
 		}
 		
@@ -746,6 +745,10 @@ package com.zavoo.svg.nodes
 		 * @param value New value for style
 		 **/ 
 		private function updateStyleString(name:String, value:String):void {
+			if (this._style[name] == value) {
+				return;
+			}
+			
 			this._style[name] = value;
 			
 			var newStyleString:String = '';
@@ -758,6 +761,8 @@ package com.zavoo.svg.nodes
 			}
 			
 			this._xml.@style = newStyleString;		
+			
+			this.invalidateDisplay();
 			
 		}
 		
