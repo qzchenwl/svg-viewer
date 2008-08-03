@@ -12,27 +12,45 @@ package com.zavoo.svg.nodes
 			super(xml);		
 		}	
 		
-		override protected function redrawNode(event:Event):void {
+		override protected function draw():void {		
 			if (this.parent != null) {
 				NodeTween.removeTweens(SVGNode(this.parent));
 			}
 						
 			var attributeName:String = this.getAttribute('attributeName');
+			
+			if (NodeTween.isTweeningField(SVGNode(this.parent), attributeName)) {
+				return;
+			}
 				
 			var startVal:String = this.getAttribute('from');			
 			if (!startVal) {
 				startVal = SVGNode(this.parent).getStyle(attributeName)
 			}
-			var startValInt:int = SVGColors.cleanNumber(startVal);			
+			var startValInt:Number = timeToSeconds(startVal);			
 			
 			var endVal:String = this.getAttribute('to');
-			var endValInt:int = SVGColors.cleanNumber(endVal);
+			var endValInt:Number = timeToSeconds(endVal);
+			
+			var byVal:String = this.getAttribute('by');
+			if (byVal) {
+				endValInt = startValInt + timeToSeconds(byVal); 
+			}
 			
 			var begin:String = this.getAttribute('begin');	
-			var beginInt:int = SVGColors.cleanNumber(begin);
+			var beginInt:Number = timeToSeconds(begin);
 					
 			var duration:String = this.getAttribute('dur');
-			var durationInt:int =  SVGColors.cleanNumber(duration);
+			var durationInt:Number =  timeToSeconds(duration);
+			
+			var end:String = this.getAttribute('end');
+			var endInt:Number = beginInt + durationInt;
+			if (!end) {
+				endInt = timeToSeconds(end);
+			}			
+			if (endInt < (beginInt + durationInt)) {
+				endInt = beginInt + durationInt;
+			}
 			
 			var repeat:String = this.getAttribute('repeatCount');
 			var repeatInt:int;
@@ -44,7 +62,7 @@ package com.zavoo.svg.nodes
 				repeatInt = SVGColors.cleanNumber(repeat);
 			}
 			
-			NodeTween.addTween(SVGNode(this.parent), attributeName, beginInt, durationInt, startValInt, endValInt, repeatInt);
+			NodeTween.addTween(SVGNode(this.parent), attributeName, beginInt, durationInt, endInt, startValInt, endValInt, repeatInt);
 			
 			
 		}
