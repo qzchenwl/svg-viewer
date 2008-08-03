@@ -530,6 +530,12 @@ package com.zavoo.svg.nodes
 			if (this._style.hasOwnProperty(name)) {
 				return this._style[name];
 			}
+			
+			var attribute:String = this.getAttribute(name);
+			if (attribute) {
+				return attribute;
+			}
+			
 			//Opacity should not be inherited
 			else if (name == 'opacity') {
 				return '1';
