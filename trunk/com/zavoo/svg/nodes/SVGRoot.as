@@ -1,6 +1,7 @@
 package com.zavoo.svg.nodes
 {
 	import com.zavoo.svg.data.SVGColors;
+	import com.zavoo.svg.utils.NodeTween;
 	
 	import flash.display.Shape;
 	
@@ -43,6 +44,8 @@ package com.zavoo.svg.nodes
 		 * Create new _elementById object
 		 **/
 		public override function set xml(value:XML):void {
+			NodeTween.init();
+			
 			default xml namespace = svg;
 			this._elementById = new Object();	
 			this.clearChildren();		
