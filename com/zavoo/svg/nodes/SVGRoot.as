@@ -4,6 +4,7 @@ package com.zavoo.svg.nodes
 	import com.zavoo.svg.utils.NodeTween;
 	
 	import flash.display.Shape;
+	import flash.utils.getTimer;
 	
 	/**
 	 * Root container of the SVG
@@ -19,6 +20,11 @@ package com.zavoo.svg.nodes
 		 * Title of SVG
 		 **/
 		private var _title:String;
+		
+		/**
+		 * Used to synchronize tweens
+		 **/
+		private var _loadTime:int;
 				
 		public function SVGRoot(xml:XML = null):void {						
 			super(XML(xml)); 					
@@ -50,6 +56,9 @@ package com.zavoo.svg.nodes
 			this._elementById = new Object();	
 			this.clearChildren();		
 			super.xml = value;	
+			
+			this._loadTime = getTimer();
+			
 		} 	
 		
 		/**
@@ -160,6 +169,13 @@ package com.zavoo.svg.nodes
 		
 		public function set title(value:String):void {
 			this._title = value;
+		}
+		
+		/**
+		 * Used to synchronize tweens
+		 **/
+		public function get loadTime():int {
+			return this._loadTime;
 		}
 	}
 }
