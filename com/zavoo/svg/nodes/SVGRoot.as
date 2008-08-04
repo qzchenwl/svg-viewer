@@ -1,7 +1,6 @@
 package com.zavoo.svg.nodes
 {
 	import com.zavoo.svg.data.SVGColors;
-	import com.zavoo.svg.utils.NodeTween;
 	
 	import flash.display.Shape;
 	import flash.utils.getTimer;
@@ -49,8 +48,7 @@ package com.zavoo.svg.nodes
 		 * Set super._xml
 		 * Create new _elementById object
 		 **/
-		public override function set xml(value:XML):void {
-			NodeTween.init();
+		public override function set xml(value:XML):void {			
 			
 			default xml namespace = svg;
 			this._elementById = new Object();	
@@ -68,8 +66,10 @@ package com.zavoo.svg.nodes
 		 * 
 		 * @param node node to be registered
 		 **/
-		public function registerElement(id:String, node:*):void {							
-			this._elementById[id] = node;			
+		public function registerElement(id:String, node:*):void {	
+			if (this._elementById[id] == undefined) {						
+				this._elementById[id] = node;
+			}			
 		}
 		
 		/**

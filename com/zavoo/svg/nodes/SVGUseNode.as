@@ -60,6 +60,7 @@ package com.zavoo.svg.nodes
 				
 			}
 			this._revision = this._symbol.revision;
+			
 		}
 		
 		/**
