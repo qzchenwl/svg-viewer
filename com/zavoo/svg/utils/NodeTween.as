@@ -16,46 +16,52 @@ package com.zavoo.svg.utils
 		public static var tweens:Dictionary = new Dictionary();
 		public static var listening:Boolean = false;
 		
+		public static function init():void {
+			tweens = new Dictionary();
+			listening = false;
+		}
+		
 		public static function addTween (target:SVGNode, field:String, delay:Number, duration:Number, end:Number, fromVal:Number, toVal:Number, repeat:int):NodeTween {
 						
 			var nodeTween:NodeTween = new NodeTween(target, field, delay, duration, end, fromVal, toVal, repeat);
 			
 			if (!listening) {
-				Application.application.stage.addEventListener(Event.ENTER_FRAME, renderTweens);
-				listening = true;
+				Application.application.stage.addEventListener(Event.ENTER_FRAME, renderTweens);				
+				NodeTween.listening = true;
 			}
 			
 			if (tweens[target] == undefined) {
-				tweens[target] = new Object();
-			}
-			else {				
-				removeTween(target,field);
+				tweens[target] = new Dictionary();
 			}
 			
-			tweens[target][field] = nodeTween;
+			tweens[target][nodeTween] = nodeTween;
 			
 			return nodeTween;
 		}
 		
-		public static function removeTween(target:SVGNode, field:String):void {
-			if ( tweens[target][field] != undefined ) {
-				delete tweens[target][field];
+		public static function removeTween(nodeTween:NodeTween):void {
+			
+			if ( tweens[nodeTween._target][nodeTween] != undefined ) {
+				
+				delete tweens[nodeTween._target][nodeTween];
 			}
 			
-			for each (var object:Object in tweens[target]) {
+			for each (var object:Object in tweens[nodeTween._target]) {
 				return;
 			}
 			
 			//Object is empty
-			delete tweens[target];
+			delete tweens[nodeTween._target];
 			
 			checkTweens();
 		}
 		
 		public static function removeTweens(target:SVGNode):void {
-			delete tweens[target];
-			
-			checkTweens();
+			return;
+			if (tweens != null) {
+				delete tweens[target];
+				checkTweens();
+			}
 		}
 				
 		public static function isTweening(target:SVGNode):Boolean {
@@ -66,7 +72,8 @@ package com.zavoo.svg.utils
 		}
 		
 		public static function isTweeningField(target:SVGNode, field:String):Boolean {
-			if ((tweens[target] == undefined) 
+			if ( (tweens == null)
+				|| (tweens[target] == undefined) 
 				|| (tweens[target][field] == undefined)) {
 				return false;
 			} 
@@ -74,15 +81,15 @@ package com.zavoo.svg.utils
 		}
 		
 		private static function renderTweens(event:Event):void {
-			for each (var object:Object in tweens) {
-				for each (var nodeTween:NodeTween in object) {
+			for each (var dictionary:Dictionary in tweens) {
+				for each (var nodeTween:NodeTween in dictionary) {
 					nodeTween.renderTween();
 				}
 			}
 		}
 		
 		private static function checkTweens():void {
-			for each (var object:Object in tweens) {
+			for each (var dictionary:Dictionary in tweens) {
 				return;
 			}
 			
@@ -152,7 +159,7 @@ package com.zavoo.svg.utils
 				newVal = this._toVal;
 				if (timeLapsed > this._end) {
 					if (this._repeat == 0) {
-						removeTween(this._target, this._field);
+						removeTween(this);
 					}
 					else {
 						if (this._repeat > 0) {
