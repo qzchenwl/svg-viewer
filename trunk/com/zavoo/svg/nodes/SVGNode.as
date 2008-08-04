@@ -53,13 +53,7 @@ package com.zavoo.svg.nodes
 		 **/
 		protected var _invalidDisplay:Boolean = false;
 		
-		/**
-		 * Set to true if node is a copy from a Symbole, Def, or other node
-		 **/
-		protected var _isClone:Boolean = false;
-		 
-		
-		
+				
 		/**
 		 * Constructor
 		 *
@@ -405,12 +399,12 @@ package com.zavoo.svg.nodes
 		 **/
 		protected function registerId(event:Event):void {
 			this.removeEventListener(Event.ADDED, registerId);		
-			if (!this._isClone) {	
-				var id:String = this._xml.@id;
-				if (id != "") {
-					this.svgRoot.registerElement(id, this);
-				}
-			}			
+				
+			var id:String = this._xml.@id;
+			if (id != "") {
+				this.svgRoot.registerElement(id, this);
+			}
+						
 		}
 		
 		/**
@@ -602,11 +596,7 @@ package com.zavoo.svg.nodes
 					this.graphics.clear();		
 					
 					if (this.numChildren == 0) {
-						this.parse();
-					}
-					
-					if (this is SVGUseNode) {
-						this.isClone = true;
+						this.parse();						
 					}
 					
 					this.setAttributes();						
@@ -695,26 +685,7 @@ package com.zavoo.svg.nodes
 		public function get graphicsCommands():Array {
 			return this._graphicsCommands;
 		}
-		
-		/**
-		 * @private
-		 **/
-		public function set isClone(value:Boolean):void {
-			this._isClone = value;
-			for (var i:uint = 0; i < this.numChildren; i++) {
-				if (this.getChildAt(i) is SVGNode) {
-					SVGNode(this.getChildAt(i)).isClone = value;
-				}
-			}
-		} 
-		
-		/**
-		 * Set if a node is a copy such as under a Use node
-		 **/
-		public function get isClone():Boolean {
-			return this._isClone;
-		}
-		
+			
 		
 		/**
 		 * Set node style to new value
