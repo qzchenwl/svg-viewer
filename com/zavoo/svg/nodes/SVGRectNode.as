@@ -1,6 +1,6 @@
 package com.zavoo.svg.nodes
 {
-	import flash.display.DisplayObject;
+	import com.zavoo.svg.data.SVGColors;
 	
 	public class SVGRectNode extends SVGNode
 	{				
@@ -31,7 +31,7 @@ package com.zavoo.svg.nodes
 				rx = ry;
 			}
 			if (rx != null) {
-				this._graphicsCommands.push(['RECT', x, y, width, height, (Number(rx) * 2), Number(ry) * 2]);
+				this._graphicsCommands.push(['RECT', x, y, width, height, (SVGColors.cleanNumber(rx) * 2), SVGColors.cleanNumber(ry) * 2]);				
 			}
 			else {
 				this._graphicsCommands.push(['RECT', x, y, width, height]);

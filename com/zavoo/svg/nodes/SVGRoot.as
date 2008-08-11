@@ -3,6 +3,7 @@ package com.zavoo.svg.nodes
 	import com.zavoo.svg.data.SVGColors;
 	
 	import flash.display.Shape;
+	import flash.events.Event;
 	import flash.utils.getTimer;
 	
 	/**
@@ -24,9 +25,12 @@ package com.zavoo.svg.nodes
 		 * Used to synchronize tweens
 		 **/
 		private var _loadTime:int;
+		
+		private var _width:Number;
+		private var _height:Number;
 				
-		public function SVGRoot(xml:XML = null):void {						
-			super(XML(xml)); 					
+		public function SVGRoot(xml:XML = null):void {
+			super(XML(xml));
 		}	
 		
 		/**
@@ -35,6 +39,8 @@ package com.zavoo.svg.nodes
 		public function set scale(value:Number):void {
 			this.scaleX = value;
 			this.scaleY = value;
+			
+			this.dispatchEvent(new Event(Event.RESIZE));
 		}
 		
 		/**
@@ -48,8 +54,9 @@ package com.zavoo.svg.nodes
 		 * Set super._xml
 		 * Create new _elementById object
 		 **/
-		public override function set xml(value:XML):void {			
-			
+		public override function set xml(value:XML):void {		
+			this._width = 0;
+			this._height = 0;
 			default xml namespace = svg;
 			this._elementById = new Object();	
 			this.clearChildren();		
@@ -57,7 +64,9 @@ package com.zavoo.svg.nodes
 			
 			this._loadTime = getTimer();
 			
-		} 	
+			this.dispatchEvent(new Event(Event.RESIZE));
+					
+		}
 		
 		/**
 		 * Register a node
@@ -128,7 +137,10 @@ package com.zavoo.svg.nodes
 			var viewBox:String = this.getAttribute('viewBox');
 			if (viewBox != null) {
 				var points:Array = viewBox.split(/\s+/);
-				this.addRootMask(points[0], points[1], points[2], points[3]);				
+				this.addRootMask(points[0], points[1], points[2], points[3]);		
+				
+				this._width = points[2];
+				this._height = points[3]; 
 			}
 			else {
 				var w:String = this.getAttribute('width');
@@ -138,7 +150,9 @@ package com.zavoo.svg.nodes
 					if (w.match('%') || h.match('%')) {
 						return;
 					}
-					this.addRootMask(0, 0, SVGColors.cleanNumber(w), SVGColors.cleanNumber(h));
+					this._width = SVGColors.cleanNumber(w);
+					this._height = SVGColors.cleanNumber(h);
+					this.addRootMask(0, 0, this._width, this._height);
 				}
 			}
 		}		
@@ -169,7 +183,7 @@ package com.zavoo.svg.nodes
 		
 		public function set title(value:String):void {
 			this._title = value;
-		}
+		} 
 		
 		/**
 		 * Used to synchronize tweens
@@ -177,5 +191,46 @@ package com.zavoo.svg.nodes
 		public function get loadTime():int {
 			return this._loadTime;
 		}
+		
+		
+		/**
+		 * return width of SVG
+		 **/
+		override public function get width():Number {
+			if (this._width > 0) {
+				return this._width * this.scaleX;
+			}
+			else {
+				return super.width;
+			}
+		}
+		
+		/**
+		 * @private
+		 **/
+		override public function set width(value:Number):void {
+			//Do nothing
+		}
+		
+		/**
+		 * return height of SVG
+		 **/
+		override public function get height():Number {
+			if (this._height > 0) {
+				return this._height * this.scaleY;
+			}
+			else {
+				return super.height;
+			}
+		}
+		
+		/**
+		 * @private
+		 **/
+		override public function set height(value:Number):void {
+			//Do nothing
+		}
+		
+		
 	}
 }

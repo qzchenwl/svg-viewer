@@ -21,7 +21,8 @@ package com.zavoo.svg
 			this._svgRoot = new SVGRoot(null);
 			this.rawChildren.addChild(this._svgRoot);
 			
-			this.addEventListener(Event.ENTER_FRAME, sizeCanvas);
+			this._svgRoot.addEventListener(Event.RESIZE, sizeCanvas);
+			
 		}
 		
 		/**
@@ -70,8 +71,7 @@ package com.zavoo.svg
 		 * @private
 		 **/
 		override public function set scaleX(value:Number):void {
-			this._svgRoot.scaleX = value;	
-			this.sizeCanvas();
+			this.scale = value;
 		}
 		
 		override public function get scaleX():Number {
@@ -83,8 +83,7 @@ package com.zavoo.svg
 		 * @private
 		 **/
 		override public function set scaleY(value:Number):void {
-			this._svgRoot.scaleY = value;
-			this.sizeCanvas();
+			this.scale = value;
 		}
 		
 		override public function get scaleY():Number {

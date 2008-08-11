@@ -179,12 +179,13 @@ package com.zavoo.svg.nodes
 								break;
 								
 							case "translate":
+															
 								if (argsArray.length == 1) {
-									this.x = argsArray[0];
+									this.x = SVGColors.cleanNumber(argsArray[0]) + SVGColors.cleanNumber(this.getAttribute('x'));									
 								}
 								else if (argsArray.length == 2) {
-									this.x = argsArray[0];
-									this.y = argsArray[1];
+									this.x = SVGColors.cleanNumber(argsArray[0]) + SVGColors.cleanNumber(this.getAttribute('x'));
+									this.y = SVGColors.cleanNumber(argsArray[1]) + SVGColors.cleanNumber(this.getAttribute('y'));
 								}
 								break;
 								
@@ -276,7 +277,7 @@ package com.zavoo.svg.nodes
 				fill_color = 0;
 			}			
 			else {			
-				fill_alpha = Number(this.getStyle('fill-opacity'));
+				fill_alpha = SVGColors.cleanNumber(this.getStyle('fill-opacity'));
 				fill_color = SVGColors.getColor((fill));
 				this.graphics.beginFill(fill_color, fill_alpha);
 			}
@@ -295,9 +296,9 @@ package com.zavoo.svg.nodes
 				line_width = 0;
 			}
 			else {
-				line_color = Number(SVGColors.getColor(stroke));
-				line_alpha = Number(this.getStyle('stroke-opacity'));
-				line_width = Number(this.getStyle('stroke-width'));
+				line_color = SVGColors.cleanNumber(SVGColors.getColor(stroke));
+				line_alpha = SVGColors.cleanNumber(this.getStyle('stroke-opacity'));
+				line_width = SVGColors.cleanNumber(this.getStyle('stroke-width'));
 			}
 			
 			var capsStyle:String = this.getStyle('stroke-linecap');
@@ -327,7 +328,7 @@ package com.zavoo.svg.nodes
 				miterLimit = '4';
 			}
 			
-			this.graphics.lineStyle(line_width, line_color, line_alpha, false, LineScaleMode.NORMAL, capsStyle, jointStyle, Number(miterLimit));
+			this.graphics.lineStyle(line_width, line_color, line_alpha, false, LineScaleMode.NORMAL, capsStyle, jointStyle, SVGColors.cleanNumber(miterLimit));
 					
 		}
 		
