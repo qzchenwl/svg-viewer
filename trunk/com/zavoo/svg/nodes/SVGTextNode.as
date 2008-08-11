@@ -80,7 +80,7 @@ package com.zavoo.svg.nodes
 					textFormat.font = fontFamily;
 				}
 				if (fontSize != null) {
-					textFormat.size = Number(fontSize);
+					textFormat.size = SVGColors.cleanNumber(fontSize);
 				}			
 				if (fill != null) {
 					textFormat.color = SVGColors.getColor(fill);

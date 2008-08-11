@@ -17,7 +17,7 @@ package com.zavoo.svg.nodes
 		}	
 		
 		protected override function draw():void {
-			this.graphics.lineStyle(1);
+			//this.graphics.lineStyle(1);
 			this.runGraphicsCommands();			
 		}
 		
