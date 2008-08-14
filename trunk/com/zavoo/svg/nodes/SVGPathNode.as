@@ -190,10 +190,7 @@ package com.zavoo.svg.nodes
 				x += this.currentX;
 				y += this.currentY;
 			}
-			
-			
-			y -= ry * 2; //y is off by the diameter of the ellipse, Why?!?
-			
+						
 			EllipticalArc.drawArc(rx, ry, xAxisRotation, Boolean(largeArcFlag), Boolean(sweepFlag), x, y, this.currentX, this.currentY, this._graphicsCommands);
 			
 			this.currentX = x;
