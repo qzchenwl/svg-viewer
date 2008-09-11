@@ -46,11 +46,13 @@ package com.zavoo.svg.nodes
 			for (var i:int = 0; i < points.length; i++) {
 				var point:Array = String(points[i]).split(',');
 				if (i == 0) {
+					this._graphicsCommands.push(['SF']);
 					this._graphicsCommands.push(['M', point[0], point[1]]);
 				}
 				else if (i == (points.length - 1)) {
 					this._graphicsCommands.push(['L', point[0], point[1]]);	
 					this._graphicsCommands.push(['Z']);
+					this._graphicsCommands.push(['EF']);
 				}
 				else {
 					this._graphicsCommands.push(['L', point[0], point[1]]);
