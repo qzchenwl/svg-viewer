@@ -86,60 +86,8 @@ package com.zavoo.svg.nodes
 			
 			bitmap = new Bitmap( bitmapData );
 			bitmap.opaqueBackground = null;
-			this.addChild(bitmap);
+			this.addChild(bitmap);			
 			
-			//this.addImageMask();	
-			//this.transformImage();
-			
-		}
-		
-		
-		/*private function transformImage():void {
-			var trans:String = String(this.getAttribute('transform', ''));
-			this.transform.matrix = this.getTransformMatrix(trans);
-			//spriteMask.transform.matrix = bitmap.transform.matrix.clone();			
-		}*/	
-				
-		/*override protected function transformNode():void {
-			
-		}*/		
-		
-		/*private function getTransformMatrix(transform:String):Matrix {
-			var newMatrix:Matrix = new Matrix();
-			var trans:String = String(this.getAttribute('transform', ''));
-			
-			if (trans != '') {
-				var transArray:Array = trans.match(/\S+\(.*?\)/sg);
-				for each(var tran:String in transArray) {
-					var tranArray:Array = tran.split('(',2);
-					if (tranArray.length == 2)
-					{						
-						var command:String = String(tranArray[0]);
-						var args:String = String(tranArray[1]);
-						args = args.replace(')','');
-						var argsArray:Array = args.split(/[, ]/);
-						//trace('Transform: ' + tran);
-						switch (command) {
-							case "matrix":
-								if (argsArray.length == 6) {									
-									newMatrix.a = argsArray[0];
-									newMatrix.b = argsArray[1];
-									newMatrix.c = argsArray[2];
-									newMatrix.d = argsArray[3];
-									newMatrix.tx = argsArray[4];
-									newMatrix.ty = argsArray[5];
-									return newMatrix;									
-								}
-								break;
-								
-							default:
-								//trace('Unknown Transformation: ' + command);
-						}
-					}
-				}			
-			}			
-			return null;
-		}*/
-		
+		}				
 	}
 }
