@@ -264,6 +264,9 @@ package com.zavoo.svg.nodes
 		
 		
 		public function set invalidNodeCount(value:int):void {
+			if (value < 0) {
+				trace('Something is wrong with the invalid node counter! It has a value of ' + value.toString() + '!');
+			}
 			this._invalidNodeCount = value;
 			if (value == 0) {
 				this.dispatchEvent(new SVGEvent(SVGEvent.RENDER_FINISHED, true));
