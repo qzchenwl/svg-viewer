@@ -374,9 +374,15 @@ package com.zavoo.svg.nodes
 					
 			for each (var command:Array in this._graphicsCommands) {
 				switch(command[0]) {
+					case "SF":
+						this.nodeBeginFill();
+						break;
+					case "EF":
+						this.nodeEndFill();
+						break;
 					case "M":
 						this.graphics.moveTo(command[1], command[2]);
-						this.nodeBeginFill();
+						//this.nodeBeginFill();
 						firstX = command[1];
 						firstY = command[2];
 						break;
@@ -388,7 +394,7 @@ package com.zavoo.svg.nodes
 						break;
 					case "Z":
 						this.graphics.lineTo(firstX, firstY);
-						this.nodeEndFill();
+						//this.nodeEndFill();
 						break;
 					case "LINE":
 						this.nodeBeginFill();

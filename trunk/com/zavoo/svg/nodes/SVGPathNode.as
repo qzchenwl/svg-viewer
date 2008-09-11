@@ -86,6 +86,8 @@ package com.zavoo.svg.nodes
 			var pathData:String = this.normalizeSVGData(this._xml.@d);			
 
 			var szSegs:Array = pathData.split(',');
+			
+			this._graphicsCommands.push(['SF']);
 						
 			for(var pos:int = 0; pos < szSegs.length; ) {
 				var command:String = szSegs[pos++];				
@@ -166,7 +168,8 @@ package com.zavoo.svg.nodes
 						trace("Unknown Segment Type: " + command);
 						break;
 				}			
-			}			
+			}		
+			this._graphicsCommands.push(['EF']);	
 		}
 		
 		private function closePath():void {
