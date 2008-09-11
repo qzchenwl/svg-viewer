@@ -29,6 +29,7 @@ package com.zavoo.svg.nodes
 	import com.zavoo.svg.nodes.mask.SVGMask;
 	
 	import flash.display.CapsStyle;
+	import flash.display.DisplayObject;
 	import flash.display.JointStyle;
 	import flash.display.LineScaleMode;
 	import flash.display.Sprite;
@@ -78,6 +79,7 @@ package com.zavoo.svg.nodes
 		 **/
 		protected var _invalidDisplay:Boolean = false;
 		
+		protected var _firstRendering:Boolean = true;
 				
 		/**
 		 * Constructor
@@ -86,10 +88,11 @@ package com.zavoo.svg.nodes
 		 *
 		 * @return void.		
 		 */
-		public function SVGNode(xml:XML = null):void {			
+		public function SVGNode(xml:XML = null):void {	
+			this._xml = xml;		
 			this.xml = xml;			
 			this.addEventListener(Event.ADDED, registerId);			
-		}			
+		}					
 		
 		/** 
 		 * Called to generate AS3 graphics commands from the SVG instructions		    
@@ -430,8 +433,8 @@ package com.zavoo.svg.nodes
 		 * If node has an "id" attribute, register it with the root node
 		 **/
 		protected function registerId(event:Event):void {
-			this.removeEventListener(Event.ADDED, registerId);		
-				
+			this.removeEventListener(Event.ADDED, registerId);
+			
 			var id:String = this._xml.@id;
 			if (id != "") {
 				this.svgRoot.registerElement(id, this);
@@ -452,6 +455,8 @@ package com.zavoo.svg.nodes
 				if (childXML.nodeKind() == 'element') {
 					
 					nodeName = nodeName.toLowerCase();
+					
+					var validNode:Boolean = true;
 					
 					switch(nodeName) {
 						case "animate":
@@ -540,6 +545,7 @@ package com.zavoo.svg.nodes
 							trace("Unknown Element: " + nodeName);
 							break;	
 					}	
+					
 				}				
 			}			
 		}
@@ -604,7 +610,7 @@ package com.zavoo.svg.nodes
 		public function invalidateDisplay():void {
 			if (this._invalidDisplay == false) {
 				this._invalidDisplay = true;
-				this.addEventListener(Event.ENTER_FRAME, redrawNode);
+				this.addEventListener(Event.ENTER_FRAME, redrawNode);				
 			}			
 		}
 		
@@ -617,11 +623,7 @@ package com.zavoo.svg.nodes
 				return;
 			}		
 			
-			if (this._invalidDisplay) {
-				
-				this._invalidDisplay = false;
-				this.removeEventListener(Event.ENTER_FRAME, redrawNode);
-				
+			if (this._invalidDisplay) {				
 				if (this._xml != null) {	
 				
 					//this.clearChildren();
@@ -637,9 +639,32 @@ package com.zavoo.svg.nodes
 					this.draw();	
 					
 					this.setupFilters();								
-				}	
+				}
+				
+				this._invalidDisplay = false;
+				this.removeEventListener(Event.ENTER_FRAME, redrawNode);		
+				
+				
+				if (!(this is SVGRoot)) {
+					this.svgRoot.invalidNodeCount--;
+				}
+									
 			}
 		}
+		
+		/**
+		 * Track nodes as they are added so we know when to send the RENDER_DONE event
+		 **/
+		override public function addChild(child:DisplayObject):DisplayObject {
+			
+			if (child is SVGNode) {				
+				this.svgRoot.invalidNodeCount++;
+			}
+			
+			super.addChild(child);	
+			return child;
+		}
+		
 		
 		/**
 		 * Add any assigned filters to node
