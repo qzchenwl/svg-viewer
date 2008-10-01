@@ -55,6 +55,10 @@ package com.zavoo.svg.nodes
 			if ((ry != null) && (rx == null)) {
 				rx = ry;
 			}
+			
+			var rxVal:Number = Number(rx);
+			var ryVal:Number = Number(ry);
+			
 			if (rx != null) {
 				this._graphicsCommands.push(['RECT', x, y, width, height, (SVGColors.cleanNumber(rx) * 2), SVGColors.cleanNumber(ry) * 2]);				
 			}

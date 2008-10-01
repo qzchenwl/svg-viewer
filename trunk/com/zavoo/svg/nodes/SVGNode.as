@@ -35,8 +35,6 @@ package com.zavoo.svg.nodes
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Matrix;
-	
-	
 		
 	/** Base node extended by all other SVG Nodes **/
 	public class SVGNode extends Sprite
@@ -146,11 +144,11 @@ package com.zavoo.svg.nodes
 			
 			//If there is not a transform attribute see if we can load the placement values,
 			//Don't load both transform and placement values
-			if (this.getAttribute('transform') == null) {				
+			//if (this.getAttribute('transform') == null) {				
 				this.loadAttribute('x');	
 				this.loadAttribute('y');
 				this.loadAttribute('rotate', 'rotation');
-			}	
+			//}	
 			
 			this.loadStyle('opacity', 'alpha');			
 								
@@ -195,14 +193,19 @@ package com.zavoo.svg.nodes
 						switch (command) {
 							case "matrix":
 								if (argsArray.length == 6) {
-									var nodeMatrix:Matrix = this.transform.matrix;
+									var nodeMatrix:Matrix = new Matrix();
 									nodeMatrix.a = argsArray[0];
 									nodeMatrix.b = argsArray[1];
 									nodeMatrix.c = argsArray[2];
 									nodeMatrix.d = argsArray[3];
 									nodeMatrix.tx = argsArray[4];
 									nodeMatrix.ty = argsArray[5];
-									this.transform.matrix = nodeMatrix;
+									
+									var matrix:Matrix = this.transform.matrix.clone();
+									matrix.concat(nodeMatrix);
+									
+									this.transform.matrix = matrix;
+									
 								}
 								break;
 								
@@ -287,6 +290,7 @@ package com.zavoo.svg.nodes
 		protected function draw():void {
 			this.graphics.clear();			
 			this.runGraphicsCommands();
+			
 		}
 				
 				
@@ -632,6 +636,9 @@ package com.zavoo.svg.nodes
 					if (this.numChildren == 0) {
 						this.parse();						
 					}
+					
+					this.x = 0;
+					this.y = 0;
 					
 					this.setAttributes();						
 					this.generateGraphicsCommands();	
