@@ -205,6 +205,10 @@ package com.zavoo.svg.data
 			return {r:red, g:green, b:blue};
 		}
 		
+		static public function rgbToNumber (r:uint, g:uint, b:uint):Number {
+			return (r << 16) | (g << 8) | (b);
+		}
+		
 		/**
 		 * Get the number value of a color string
 		 * 
@@ -217,6 +221,14 @@ package com.zavoo.svg.data
 				if(color.match(/^#/)) {
 					color = color.replace('#', '0x');
 					return parseInt(color);
+				}
+				else if(color.indexOf("rgb") != -1){
+					var str:Array = color.replace(/\srgb\(|\)/g, "").split(",");
+   					var r:int = str[0];
+   					var g:int = str[1];
+   					var b:int = str[2];
+   					return rgbToNumber(r, g, b);
+				   
 				}
 				else if (colors.hasOwnProperty(color)) {
 					return colors[color];
