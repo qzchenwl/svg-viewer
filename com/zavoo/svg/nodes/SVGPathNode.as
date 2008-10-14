@@ -219,7 +219,7 @@ package com.zavoo.svg.nodes
 				y += this.currentY;
 			}
 						
-			EllipticalArc.drawArc(rx, ry, xAxisRotation, Boolean(largeArcFlag), Boolean(sweepFlag), x, y, this.currentX, this.currentY, this._graphicsCommands);
+			EllipticalArc.drawArc(rx, ry, xAxisRotation, Boolean(largeArcFlag), Boolean(sweepFlag), x, y, this.currentX, this.currentY, this._graphicsCommands);			
 			
 			this.currentX = x;
 			this.currentY = y;

@@ -563,7 +563,7 @@ package com.zavoo.svg.nodes
 		 * @return Value of style or null if it is not found
 		 **/
 		public function getStyle(name:String):String{
-			if (this._style.hasOwnProperty(name)) {
+			if (this._style && this._style.hasOwnProperty(name)) {
 				return this._style[name];
 			}
 			
