@@ -29,6 +29,7 @@ package com.zavoo.svg.nodes
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.text.Font;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -93,6 +94,8 @@ package com.zavoo.svg.nodes
 			
 			super.setAttributes();
 			
+			var embeddedFonts:Array = Font.enumerateFonts();
+			
 			if (this._textField != null) {
 				var fontFamily:String = this.getStyle('font-family');				
 				var fontSize:String = this.getStyle('font-size');
@@ -100,13 +103,22 @@ package com.zavoo.svg.nodes
 				
 				var textFormat:TextFormat = this._textField.getTextFormat();
 				
-				if (fontFamily != null) {
-					fontFamily = fontFamily.replace("'", '');
-					textFormat.font = fontFamily;
+				if (embeddedFonts.length == 0) { //No embedded fonts, use system fonts
+					this._textField.embedFonts = false;
+					if (fontFamily != null) {
+						fontFamily = fontFamily.replace("'", '');
+						textFormat.font = fontFamily;
+					}
 				}
+				else { //Use embedded fonts
+					this._textField.embedFonts = true;					
+					textFormat.font = Font(embeddedFonts[0]).fontName;
+				}
+				
 				if (fontSize != null) {
 					textFormat.size = SVGColors.cleanNumber(fontSize);
-				}			
+				}
+							
 				if (fill != null) {
 					textFormat.color = SVGColors.getColor(fill);
 				}
@@ -114,20 +126,34 @@ package com.zavoo.svg.nodes
 				this._textField.text = this._text;
 				this._textField.setTextFormat(textFormat);
 				
-				var bitmapData:BitmapData = new BitmapData(this._textField.width, this._textField.height, true, 0x000000);
-				
-				bitmapData.draw(this._textField);
-				
 				if (this._textBitmap != null) {
-					this.removeChild(this._textBitmap);
-				}				
+					if (this.contains(this._textBitmap)) {
+						this.removeChild(this._textBitmap);
+					}
+					this._textBitmap = null;
+				} 
 				
-				this._textBitmap = new Bitmap(bitmapData);
-				this._textBitmap.smoothing = true;
+				if (this.contains(this._textField)) {
+					this.removeChild(this._textField);
+				}
 				
-				var textLineMetrics:TextLineMetrics = this._textField.getLineMetrics(0);
-				this._textBitmap.x = -textLineMetrics.x - 2; //account for 2px gutter
-				this._textBitmap.y =  -textLineMetrics.ascent - 2; //account for 2px gutter
+				if (embeddedFonts.length == 0) { //No embedded fonts, so we need to render the text to bitmap to support rotated text
+					var bitmapData:BitmapData = new BitmapData(this._textField.width, this._textField.height, true, 0x000000);
+					
+					bitmapData.draw(this._textField);			
+					
+					this._textBitmap = new Bitmap(bitmapData);
+					this._textBitmap.smoothing = true;
+					
+					var textLineMetrics:TextLineMetrics = this._textField.getLineMetrics(0);
+					this._textBitmap.x = -textLineMetrics.x - 2; //account for 2px gutter
+					this._textBitmap.y =  -textLineMetrics.ascent - 2; //account for 2px gutter
+					
+					this._textField = null;
+				}
+				else { //There is an embedded font so display TextField
+					this.addChild(this._textField);
+				}
 			}
 		}	
 		
