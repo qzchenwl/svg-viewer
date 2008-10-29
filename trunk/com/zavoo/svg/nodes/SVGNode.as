@@ -134,9 +134,21 @@ package com.zavoo.svg.nodes
 			//Setup ClipPath
 			xmlList = this._xml.attribute('clip-path');
 			if (xmlList.length() > 0) {
+				var clipPathNode:SVGClipPathNode;
+				
 				var clipPath:String = xmlList[0].toString();
 				clipPath = clipPath.replace(/url\(#(.*?)\)/si,"$1");
-				var clipPathNode:SVGClipPathNode = this.svgRoot.getElement(clipPath);
+				var cNode:SVGNode = this.svgRoot.getElement(clipPath);
+				if (cNode is SVGDefsNode) {
+					var defNode:SVGDefsNode = SVGDefsNode(cNode);
+					
+					clipPathNode = new SVGClipPathNode(defNode.getDef(clipPath));
+					this.addChild(clipPathNode);
+				}
+				else {
+					clipPathNode = SVGClipPathNode(cNode);
+				}
+				
 				if (clipPathNode != null) {					
 					this.addMask(clipPathNode);
 				}				
