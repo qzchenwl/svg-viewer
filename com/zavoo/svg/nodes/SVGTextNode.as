@@ -29,6 +29,7 @@ package com.zavoo.svg.nodes
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.geom.Rectangle;
 	import flash.text.Font;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -107,7 +108,7 @@ package com.zavoo.svg.nodes
 					this._textField.embedFonts = false;
 					if (fontFamily != null) {
 						fontFamily = fontFamily.replace("'", '');
-						textFormat.font = fontFamily;
+						textFormat.font = fontFamily;						
 					}
 				}
 				else { //Use embedded fonts
@@ -116,7 +117,16 @@ package com.zavoo.svg.nodes
 				}
 				
 				if (fontSize != null) {
-					textFormat.size = SVGColors.cleanNumber(fontSize);
+					//Handle floating point font size
+					var fontSizeNum:Number = SVGColors.cleanNumber(fontSize);
+					var fontScale:Number = Math.floor(fontSizeNum);
+					textFormat.size = fontScale;
+					
+					fontScale = fontSizeNum / fontScale;
+					
+					_textField.scaleX = fontScale;
+					_textField.scaleY = fontScale;
+					
 				}
 							
 				if (fill != null) {
@@ -137,22 +147,32 @@ package com.zavoo.svg.nodes
 					this.removeChild(this._textField);
 				}
 				
+				var textLineMetrics:TextLineMetrics = this._textField.getLineMetrics(0);
+								
 				if (embeddedFonts.length == 0) { //No embedded fonts, so we need to render the text to bitmap to support rotated text
 					var bitmapData:BitmapData = new BitmapData(this._textField.width, this._textField.height, true, 0x000000);
+					
+					//Double resolution of bitmap
+					this._textField.scaleX = this._textField.scaleX * 2;
+					this._textField.scaleY = this._textField.scaleY * 2;
 					
 					bitmapData.draw(this._textField);			
 					
 					this._textBitmap = new Bitmap(bitmapData);
-					this._textBitmap.smoothing = true;
-					
-					var textLineMetrics:TextLineMetrics = this._textField.getLineMetrics(0);
-					this._textBitmap.x = -textLineMetrics.x - 2; //account for 2px gutter
-					this._textBitmap.y =  -textLineMetrics.ascent - 2; //account for 2px gutter
+					this._textBitmap.scaleX = 0.5;
+					this._textBitmap.scaleY = 0.5;
+					this._textBitmap.smoothing = true;		
+								
+					this._textBitmap.x = -2; //account for 2px gutter
+					this._textBitmap.y =  -2; //account for 2px gutter
 					
 					this._textField = null;
 				}
-				else { //There is an embedded font so display TextField
-					this.addChild(this._textField);
+				else { //There is an embedded font so display TextField				
+					
+					this._textField.x = -2; //account for 2px gutter
+					this._textField.y = -textLineMetrics.ascent - 2; //account for 2px gutter
+					
 				}
 			}
 		}	
@@ -164,7 +184,14 @@ package com.zavoo.svg.nodes
 			super.draw();
 			if (this._textBitmap != null) {
 				this.addChild(this._textBitmap);			
-			}			
-		} 			
+			}		
+			if (this._textField != null) {
+				this.addChild(this._textField);			
+			}	
+		} 		
+		
+		override protected function transformNode():void {
+			super.transformNode();	
+		}	
 	}
 }

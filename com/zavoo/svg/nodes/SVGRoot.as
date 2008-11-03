@@ -27,6 +27,7 @@ package com.zavoo.svg.nodes
 {
 	import com.zavoo.svg.data.SVGColors;
 	import com.zavoo.svg.events.SVGEvent;
+	import com.zavoo.svg.events.SVGUIEvent;
 	
 	import flash.display.Shape;
 	import flash.events.Event;
@@ -59,9 +60,12 @@ package com.zavoo.svg.nodes
 		 * Used to track number of nodes that need to be rendered
 		 **/
 		private var _invalidNodeCount:uint = 0;
+		
+		private var _currentNode:SVGNode = null;
 				
 		public function SVGRoot(xml:XML = null):void {
 			super(XML(xml));
+			this.addEventListener(Event.REMOVED, onRemoved);
 		}	
 		
 		/**
@@ -208,6 +212,10 @@ package com.zavoo.svg.nodes
 			}
 		}
 		
+		private function onRemoved(event:Event):void {
+			this.dispatchEvent(new SVGEvent(SVGEvent.SVG_UNLOAD));
+		}
+		
 		public function get title():String {
 			return this._title;
 		}
@@ -262,6 +270,10 @@ package com.zavoo.svg.nodes
 			//Do nothing
 		}
 		
+		override protected function setupEvents():void {
+			//Do nothing
+		}
+		
 		
 		public function set invalidNodeCount(value:int):void {
 			if (value < 0) {
@@ -269,13 +281,26 @@ package com.zavoo.svg.nodes
 			}
 			this._invalidNodeCount = value;
 			if (value == 0) {
-				this.dispatchEvent(new SVGEvent(SVGEvent.RENDER_FINISHED, true));
+				this.dispatchEvent(new SVGEvent(SVGEvent.SVG_LOAD, true));
 			}
 		}
 		
 		public function get invalidNodeCount():int {
 			return this._invalidNodeCount;
-		}	
+		}		
+		
+		public function set currentNode(node:SVGNode):void {
+			if (this._currentNode != null) {
+				this.dispatchEvent(new SVGUIEvent(this._currentNode, SVGUIEvent.FOCUS_OUT));
+			}
+			this._currentNode = node;
+			this.dispatchEvent(new SVGUIEvent(this._currentNode, SVGUIEvent.FOCUS_IN));
+			this.dispatchEvent(new SVGUIEvent(this._currentNode, SVGUIEvent.ACTIVATE));
+		}
+		
+		public function get currentNode():SVGNode {
+			return this._currentNode;
+		}
 		
 	}
 }

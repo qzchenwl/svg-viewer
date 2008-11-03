@@ -25,6 +25,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 package com.zavoo.svg.nodes
 {
+	import com.zavoo.svg.events.SVGMutationEvent;
+	
 	import flash.events.Event;
 	
 	/** 
@@ -47,7 +49,7 @@ package com.zavoo.svg.nodes
 			return null;
 		}
 		
-		override protected function registerId(event:Event):void {
+		override protected function onNodeAdded(event:Event):void {
 			for each (var defNode:XML in this._xml.children()) {
 				var id:String = defNode.@id;
 				if (defNode.localName().toString().toLocaleLowerCase() != 'filter') {
@@ -55,6 +57,9 @@ package com.zavoo.svg.nodes
 						this.svgRoot.registerElement(id, this);
 					}
 				}
+			}
+			if (this.svgRoot) {
+				this.svgRoot.dispatchEvent(new SVGMutationEvent(this, SVGMutationEvent.DOM_NODE_INSERTED));
 			}
 		}
 	}
