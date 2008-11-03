@@ -26,6 +26,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 package com.zavoo.svg.nodes
 {
 	import com.zavoo.svg.data.SVGColors;
+	import com.zavoo.svg.events.SVGMouseEvent;
+	import com.zavoo.svg.events.SVGMutationEvent;
 	import com.zavoo.svg.nodes.mask.SVGMask;
 	
 	import flash.display.CapsStyle;
@@ -34,6 +36,7 @@ package com.zavoo.svg.nodes
 	import flash.display.LineScaleMode;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 		
 	/** Base node extended by all other SVG Nodes **/
@@ -89,7 +92,9 @@ package com.zavoo.svg.nodes
 		public function SVGNode(xml:XML = null):void {	
 			this._xml = xml;		
 			this.xml = xml;			
-			this.addEventListener(Event.ADDED, registerId);			
+				
+			
+			setupEvents();		
 		}					
 		
 		/** 
@@ -153,17 +158,13 @@ package com.zavoo.svg.nodes
 					this.addMask(clipPathNode);
 				}				
 			}
+					
+			this.loadAttribute('x');	
+			this.loadAttribute('y');
+			this.loadAttribute('rotate', 'rotation');				
 			
-			//If there is not a transform attribute see if we can load the placement values,
-			//Don't load both transform and placement values
-			//if (this.getAttribute('transform') == null) {				
-				this.loadAttribute('x');	
-				this.loadAttribute('y');
-				this.loadAttribute('rotate', 'rotation');
-			//}	
+			this.loadStyle('opacity', 'alpha');
 			
-			this.loadStyle('opacity', 'alpha');			
-								
 		}
 		
 		/**
@@ -448,13 +449,22 @@ package com.zavoo.svg.nodes
 		/**
 		 * If node has an "id" attribute, register it with the root node
 		 **/
-		protected function registerId(event:Event):void {
-			this.removeEventListener(Event.ADDED, registerId);
+		protected function onNodeAdded(event:Event):void {
+			if (this.svgRoot) {	
+				var id:String = this._xml.@id;
+				if (id != "") {
+					this.svgRoot.registerElement(id, this);
+				}
 			
-			var id:String = this._xml.@id;
-			if (id != "") {
-				this.svgRoot.registerElement(id, this);
+				this.svgRoot.dispatchEvent(new SVGMutationEvent(this, SVGMutationEvent.DOM_NODE_INSERTED)); 
 			}
+						
+		}
+		
+		protected function onNodeRemoved(event:Event):void {
+			if (this.svgRoot) {			
+				this.svgRoot.dispatchEvent(new SVGMutationEvent(this, SVGMutationEvent.DOM_NODE_REMOVED));
+			} 
 						
 		}
 		
@@ -733,6 +743,10 @@ package com.zavoo.svg.nodes
 		public function set xml(xml:XML):void {		
 			this._xml = xml;
 			this.invalidateDisplay();
+			
+			if (this.svgRoot) { //if !null then already added
+				this.svgRoot.dispatchEvent(new SVGMutationEvent(this, SVGMutationEvent.DOM_CHARACTER_DATA_MODIFIED));
+			}
 		}
 		
 		/**
@@ -813,5 +827,81 @@ package com.zavoo.svg.nodes
 			
 		}
 		
+		/*
+		 **** EVENTS ****
+		 */
+		
+		protected function setupEvents():void {
+			this.addEventListener(Event.ADDED, onNodeAdded);
+			this.addEventListener(Event.REMOVED, onNodeRemoved);
+			
+			this.addEventListener(MouseEvent.CLICK, onMouseClick);
+			this.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			this.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+			this.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+			this.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+			this.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+		}
+		
+		protected function onMouseClick(event:MouseEvent):void {
+			if (this.svgRoot) {	
+				var svgMouseEvent:SVGMouseEvent = new SVGMouseEvent(this, SVGMouseEvent.CLICK, event.bubbles, 
+					event.cancelable, event.localX, event.localY, event.relatedObject, event.ctrlKey, 
+					event.altKey, event.shiftKey, event.bubbles, event.delta);
+					
+				this.svgRoot.dispatchEvent(svgMouseEvent);
+				this.svgRoot.currentNode = this;
+			}
+		}
+		
+		protected function onMouseDown(event:MouseEvent):void {
+			if (this.svgRoot) {	
+				var svgMouseEvent:SVGMouseEvent = new SVGMouseEvent(this, SVGMouseEvent.MOUSE_DOWN, event.bubbles, 
+					event.cancelable, event.localX, event.localY, event.relatedObject, event.ctrlKey, 
+					event.altKey, event.shiftKey, event.bubbles, event.delta);
+				
+				this.svgRoot.dispatchEvent(svgMouseEvent);
+			}
+		}
+		
+		protected function onMouseMove(event:MouseEvent):void {
+			if (this.svgRoot) {	
+				var svgMouseEvent:SVGMouseEvent = new SVGMouseEvent(this, SVGMouseEvent.MOUSE_MOVE, event.bubbles, 
+					event.cancelable, event.localX, event.localY, event.relatedObject, event.ctrlKey, 
+					event.altKey, event.shiftKey, event.bubbles, event.delta);				
+			
+				this.svgRoot.dispatchEvent(svgMouseEvent);
+			}
+		}
+		
+		protected function onMouseOut(event:MouseEvent):void {
+			if (this.svgRoot) {	
+				var svgMouseEvent:SVGMouseEvent = new SVGMouseEvent(this, SVGMouseEvent.MOUSE_OUT, event.bubbles, 
+					event.cancelable, event.localX, event.localY, event.relatedObject, event.ctrlKey, 
+					event.altKey, event.shiftKey, event.bubbles, event.delta);
+				
+				this.svgRoot.dispatchEvent(svgMouseEvent);
+			}
+		}
+		
+		protected function onMouseOver(event:MouseEvent):void {
+			if (this.svgRoot) {	
+				var svgMouseEvent:SVGMouseEvent = new SVGMouseEvent(this, SVGMouseEvent.MOUSE_OVER, event.bubbles, 
+					event.cancelable, event.localX, event.localY, event.relatedObject, event.ctrlKey, 
+					event.altKey, event.shiftKey, event.bubbles, event.delta);
+					
+				this.svgRoot.dispatchEvent(svgMouseEvent);
+			}
+		}
+		
+		protected function onMouseUp(event:MouseEvent):void {
+			if (this.svgRoot) {	
+				var svgMouseEvent:SVGMouseEvent = new SVGMouseEvent(this, SVGMouseEvent.MOUSE_UP, event.bubbles, 
+					event.cancelable, event.localX, event.localY, event.relatedObject, event.ctrlKey, 
+					event.altKey, event.shiftKey, event.bubbles, event.delta);
+					
+				this.svgRoot.dispatchEvent(svgMouseEvent);
+			}
+		}
 	}
 }

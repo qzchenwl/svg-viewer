@@ -25,6 +25,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 package com.zavoo.svg.nodes
 {
+	import com.zavoo.svg.events.SVGMutationEvent;
+	
 	import flash.events.Event;
 	
 	public class SVGUseNode extends SVGNode
@@ -100,8 +102,10 @@ package com.zavoo.svg.nodes
 		/**
 		 * SVGUseNode is a copy, do not register
 		 **/
-		override protected function registerId(event:Event):void {
-			//Do Nothing		
+		override protected function onNodeAdded(event:Event):void {
+			if (this.svgRoot) {
+				this.svgRoot.dispatchEvent(new SVGMutationEvent(this, SVGMutationEvent.DOM_NODE_INSERTED));	
+			}
 		}
 		
 	}
