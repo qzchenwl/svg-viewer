@@ -2,7 +2,7 @@ package com.zavoo.svg.events {
 	import flash.events.Event;
 
 	public class SVGMutationEvent extends Event {		
-		public static const DOM_SUBTREE_MODIDFIED:String = 'DOMSubtreeModified';
+		//public static const DOM_SUBTREE_MODIDFIED:String = 'DOMSubtreeModified';
 		public static const DOM_NODE_INSERTED:String = 'DOMNodeInserted';
 		public static const DOM_NODE_REMOVED:String = 'DOMNodeRemoved';
 		//public static const DOM_NODE_REMOVED_FROM_DOCUMENT:String = 'DOMNodeRemovedFromDocument';

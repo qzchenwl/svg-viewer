@@ -218,15 +218,20 @@ package com.zavoo.svg.data
 		 **/
 		static public function getColor(color:String):Number {
 			if (color != null) {			
-				if(color.match(/^#/)) {
+				if(color.match(/^#\S{6,}/s)) {
 					color = color.replace('#', '0x');
+					return parseInt(color);
+				}
+				else if(color.match(/^#\S{3,}/s)) {
+					var colorHex:Array = color.match(/^#(\S)(\S)(\S)/s);
+					color = '0x' + colorHex[1] + colorHex[1] + colorHex[2] + colorHex[2] + colorHex[3] + colorHex[3];
 					return parseInt(color);
 				}
 				else if(color.indexOf("rgb") != -1){
 					var str:Array = color.replace(/\srgb\(|\)/g, "").split(",");
-   					var r:int = str[0];
-   					var g:int = str[1];
-   					var b:int = str[2];
+   					var r:int = cleanNumber(str[0]);
+   					var g:int = cleanNumber(str[1]);
+   					var b:int = cleanNumber(str[2]);
    					return rgbToNumber(r, g, b);
 				   
 				}

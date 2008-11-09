@@ -28,6 +28,7 @@ package com.zavoo.svg.nodes
 	import com.zavoo.svg.data.SVGColors;
 	import com.zavoo.svg.events.SVGMouseEvent;
 	import com.zavoo.svg.events.SVGMutationEvent;
+	import com.zavoo.svg.nodes.fills.SVGGradientFill;
 	import com.zavoo.svg.nodes.mask.SVGMask;
 	
 	import flash.display.CapsStyle;
@@ -317,10 +318,24 @@ package com.zavoo.svg.nodes
 			var fill_color:Number
 			
 			var fill:String = this.getStyle('fill');
+			
+			var gradient:Array = fill.match(/^\s*url\(#(\S+)\)/si);
+			var name:String;
+						
 			if ((fill == 'none') || (fill == '')) {
 				fill_alpha = 0;
-				fill_color = 0;
+				fill_color = 0; 
 			}			
+			else if( gradient.length ) {
+				var fillNode:SVGNode = this.svgRoot.getElement(gradient[1]);	
+				if (fillNode is SVGDefsNode) {
+					var nodeXML:XML = SVGDefsNode(fillNode).getDef(gradient[1]);
+					name = nodeXML.localName().toString().toLowerCase();
+					if ((name == 'lineargradient') || (name == 'radialgradient')) {
+						SVGGradientFill.gradientFill(this.graphics, SVGDefsNode(fillNode).getDef(gradient[1]));
+					}
+				}	
+			}
 			else {			
 				fill_alpha = SVGColors.cleanNumber(this.getStyle('fill-opacity'));
 				fill_color = SVGColors.getColor((fill));
