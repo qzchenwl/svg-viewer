@@ -39,6 +39,8 @@ package com.zavoo.svg.nodes
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
+	
+	import mx.utils.StringUtil;
 		
 	/** Base node extended by all other SVG Nodes **/
 	public class SVGNode extends Sprite
@@ -321,23 +323,30 @@ package com.zavoo.svg.nodes
 			
 			var gradient:Array = fill.match(/^\s*url\(#(\S+)\)/si);
 			var name:String;
-						
+			
+			fill_alpha = SVGColors.cleanNumber(this.getStyle('fill-opacity'));
+			
 			if ((fill == 'none') || (fill == '')) {
 				fill_alpha = 0;
 				fill_color = 0; 
 			}			
-			else if( gradient.length ) {
+			else if( gradient && gradient.length ) {
 				var fillNode:SVGNode = this.svgRoot.getElement(gradient[1]);	
 				if (fillNode is SVGDefsNode) {
+					//Check for secondary color					
+					/* var secondColor:String = StringUtil.trim(fill.replace(/^\s*url\(#(\S+)\)/si, ''));
+					if (secondColor) {
+						this.graphics.beginFill(SVGColors.getColor(secondColor), fill_alpha);
+					} */
 					var nodeXML:XML = SVGDefsNode(fillNode).getDef(gradient[1]);
 					name = nodeXML.localName().toString().toLowerCase();
 					if ((name == 'lineargradient') || (name == 'radialgradient')) {
-						SVGGradientFill.gradientFill(this.graphics, SVGDefsNode(fillNode).getDef(gradient[1]));
+						SVGGradientFill.gradientFill(this, SVGDefsNode(fillNode).getDef(gradient[1]));
 					}
+					
 				}	
 			}
-			else {			
-				fill_alpha = SVGColors.cleanNumber(this.getStyle('fill-opacity'));
+			else {		
 				fill_color = SVGColors.getColor((fill));
 				this.graphics.beginFill(fill_color, fill_alpha);
 			}
