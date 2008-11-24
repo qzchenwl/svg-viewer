@@ -26,6 +26,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 package com.zavoo.svg.nodes.fills
 {
 	import com.zavoo.svg.data.SVGColors;
+	import com.zavoo.svg.nodes.SVGDefsNode;
+	import com.zavoo.svg.nodes.SVGNode;
 	
 	import flash.display.GradientType;
 	import flash.display.Graphics;
@@ -33,9 +35,15 @@ package com.zavoo.svg.nodes.fills
 	import flash.display.SpreadMethod;
 	import flash.geom.Matrix;
 	
+	import mx.utils.StringUtil;
+	
 	public class SVGGradientFill
 	{
-		public static function gradientFill(graphics:Graphics, xml:XML):void {
+		public namespace xlink = 'http://www.w3.org/1999/xlink';
+		
+		public static function gradientFill(svgNode:SVGNode, fillXml:XML):void {
+			
+			var xml:XML = fillXml.copy();
 			
 			var type:String;
 			var colors:Array = new Array();
@@ -49,12 +57,24 @@ package com.zavoo.svg.nodes.fills
 			var stop_opacity:Number;
 			
 			var spreadMethod:String;
-			var interpolationMethod:String = InterpolationMethod.LINEAR_RGB;
+			var interpolationMethod:String = InterpolationMethod.RGB;
 			
 			var tmp:String;
 			var attributes:Object
 			
+			var graphics:Graphics = svgNode.graphics;
+			
 			var name:String = xml.localName().toString().toLowerCase();
+			
+			var href:String = xml.@xlink::href;
+			if (href) {
+				href = href.replace(/^#/,'');
+				var hrefNode:SVGNode = svgNode.svgRoot.getElement(href);
+				if (hrefNode is SVGDefsNode) {
+					var tmpXML:XML = SVGDefsNode(hrefNode).getDef(href);
+					xml.setChildren(tmpXML.children());
+				}
+			}
 			
 			if (name == 'lineargradient') {
 				type = GradientType.LINEAR;
@@ -153,8 +173,10 @@ package com.zavoo.svg.nodes.fills
 				var styleArray:Array = style.split(';');				
 				var fields:Array;
 				for (var i:uint=0; i < styleArray.length; i++) {
-					fields = String(styleArray[i]).split(':');
-					attributes[fields[0]] = fields[1];
+					if (styleArray[i]) {
+						fields = String(styleArray[i]).split(':');					
+						attributes[StringUtil.trim(fields[0])] = StringUtil.trim(fields[1]);
+					}
 				}
 			}
 			
