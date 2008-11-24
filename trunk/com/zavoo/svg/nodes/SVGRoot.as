@@ -72,8 +72,8 @@ package com.zavoo.svg.nodes
 		 * @private
 		 **/
 		public function set scale(value:Number):void {
-			this.scaleX = value;
-			this.scaleY = value;
+			super.scaleX = value;
+			super.scaleY = value;
 			
 			this.dispatchEvent(new Event(Event.RESIZE));
 		}
@@ -84,6 +84,23 @@ package com.zavoo.svg.nodes
 		public function get scale():Number {
 			return this.scaleX;
 		}
+		
+		/**
+		 * @private
+		 **/
+		override public function set scaleX(value:Number):void {
+			super.scaleX = value;
+			this.dispatchEvent(new Event(Event.RESIZE));
+		}
+		
+		/**
+		 * @private
+		 **/
+		override public function set scaleY(value:Number):void {
+			super.scaleY = value;
+			this.dispatchEvent(new Event(Event.RESIZE));
+		}
+		
 		
 		/**
 		 * Set super._xml
@@ -276,12 +293,12 @@ package com.zavoo.svg.nodes
 		
 		
 		public function set invalidNodeCount(value:int):void {
-			if (value < 0) {
+			/* if (value < 0) {
 				trace('Something is wrong with the invalid node counter! It has a value of ' + value.toString() + '!');
-			}
+			} */
 			this._invalidNodeCount = value;
 			if (value == 0) {
-				this.dispatchEvent(new SVGEvent(SVGEvent.SVG_LOAD, true));
+				this.dispatchEvent(new SVGEvent(SVGEvent.SVG_LOAD));
 			}
 		}
 		
