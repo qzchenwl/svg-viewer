@@ -785,14 +785,14 @@ package com.zavoo.svg.nodes
 		/**
 		 * Get width calculated from _minX and _maxX
 		 **/
-		public function getWidth():Number {
+		public function getRoughWidth():Number {
 			return this._maxX - this._minX;
 		}
 		
 		/**
 		 * Get height calculated from _minY and _maxY
 		 **/
-		public function getHeight():Number {
+		public function getRoughHeight():Number {
 			return this._maxY - this._minY;
 		}
 				

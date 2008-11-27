@@ -137,7 +137,7 @@ package com.zavoo.svg.nodes.fills
 				else {
 					var width:Number = svgNode.width;
 					var height:Number = svgNode.height;
-					matrix.createGradientBox(svgNode.getWidth(), svgNode.getHeight(), 0, 0);
+					matrix.createGradientBox(svgNode.getRoughWidth(), svgNode.getRoughHeight(), 0, 0);
 				}
 				
 				/* tmp = xml.@fx;
