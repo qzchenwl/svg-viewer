@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="SVGEvent,com.zavoo.svg.events.SVGEvent,RENDER_FINISHED" name="keywords">
+<meta content="SVGEvent,com.zavoo.svg.events.SVGEvent,SVG_LOAD,SVG_UNLOAD" name="keywords">
 <title>com.zavoo.svg.events.SVGEvent</title>
 </head>
 <body>
@@ -70,7 +70,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#RENDER_FINISHED">RENDER_FINISHED</a> : String = "SVG Render Finished"<div class="summaryTableDescription">[static]</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SVG_LOAD">SVG_LOAD</a> : String = "SVGLoad"<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">SVGEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SVG_UNLOAD">SVG_UNLOAD</a> : String = "SVGUnload"<div class="summaryTableDescription">[static]</div>
 </td><td class="summaryTableOwnerCol">SVGEvent</td>
 </tr>
 </table>
@@ -110,14 +114,23 @@ showHideInherited();
 </div>
 <a name="constantDetail"></a>
 <div class="detailSectionHeader">Constant detail</div>
-<a name="RENDER_FINISHED"></a>
+<a name="SVG_LOAD"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">RENDER_FINISHED</td><td class="detailHeaderType">constant</td>
+<td class="detailHeaderName">SVG_LOAD</td><td class="detailHeaderType">constant</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public static const RENDER_FINISHED:String = "SVG Render Finished"</code>
+<code>public static const SVG_LOAD:String = "SVGLoad"</code>
+</div>
+<a name="SVG_UNLOAD"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">SVG_UNLOAD</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const SVG_UNLOAD:String = "SVGUnload"</code>
 </div>
 <br>
 <br>

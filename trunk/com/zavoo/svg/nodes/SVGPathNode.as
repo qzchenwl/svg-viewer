@@ -180,6 +180,9 @@ package com.zavoo.svg.nodes
 			this._graphicsCommands.push(['M', x, y]);
 			this.currentX = x;
 			this.currentY = y;
+			
+			this.checkX(x);
+			this.checkY(y);
 		}
 		
 		private function lineHorizontal(x:Number, isAbs:Boolean):void {
@@ -188,7 +191,7 @@ package com.zavoo.svg.nodes
 				x += this.currentX;
 				isAbs = true;
 			}
-			this.line(x,y,isAbs);			
+			this.line(x,y,isAbs);	
 		}
 		
 		private function lineVertical(y:Number, isAbs:Boolean):void {
@@ -197,7 +200,7 @@ package com.zavoo.svg.nodes
 				y += this.currentY;
 				isAbs = true;
 			}
-			this.line(x,y,isAbs);			
+			this.line(x,y,isAbs);	
 		}
 		
 		private function line(x:Number, y:Number, isAbs:Boolean):void {
@@ -209,7 +212,10 @@ package com.zavoo.svg.nodes
 				this.currentX += x;
 				this.currentY += y;				
 			}			
-			this._graphicsCommands.push(['L', this.currentX, this.currentY]);			
+			this._graphicsCommands.push(['L', this.currentX, this.currentY]);		
+			
+			this.checkX(x);
+			this.checkY(y);	
 		}
 		
 		private function ellipticalArc(rx:Number, ry:Number, xAxisRotation:Number, largeArcFlag:Number, 
@@ -223,6 +229,11 @@ package com.zavoo.svg.nodes
 			
 			this.currentX = x;
 			this.currentY = y;
+			
+			this.checkX(rx);
+			this.checkY(ry);
+			this.checkX(x);
+			this.checkY(y);
 			
 		}
 		
@@ -241,6 +252,11 @@ package com.zavoo.svg.nodes
 			}
 			
 			this.quadraticBezier(x1, y1, x, y, isAbs);
+			
+			this.checkX(x);
+			this.checkY(y);
+			this.checkX(x1);
+			this.checkY(y1);
 		}
 		
 		private function quadraticBezier(x1:Number, y1:Number, x:Number, y:Number, isAbs:Boolean):void {
@@ -259,6 +275,11 @@ package com.zavoo.svg.nodes
 			
 			this.lastCurveControlX = x1;
 			this.lastCurveControlY = y1;
+			
+			this.checkX(x);
+			this.checkY(y);
+			this.checkX(x1);
+			this.checkY(y1);
 		}
 		
 		private function cubicBezierSmooth(x2:Number, y2:Number, x:Number, y:Number, isAbs:Boolean):void {
@@ -332,7 +353,29 @@ package com.zavoo.svg.nodes
 			this.currentY = y;
 			
 			this.lastCurveControlX = x2;
-			this.lastCurveControlY = y2;			
+			this.lastCurveControlY = y2;		
+			
+			//Width/height calculations for gradients
+			this.checkX(Pc_1.x);
+			this.checkY(Pc_1.y);
+			this.checkX(Pa_1.x);
+			this.checkY(Pa_1.y);
+			
+			this.checkX(Pc_2.x);
+			this.checkY(Pc_2.y);
+			this.checkX(Pa_2.x);
+			this.checkY(Pa_2.y);
+			
+			this.checkX(Pc_3.x);
+			this.checkY(Pc_3.y);
+			this.checkX(Pa_3.x);
+			this.checkY(Pa_3.y);
+			
+			this.checkX(Pc_4.x);
+			this.checkY(Pc_4.y);
+			this.checkX(P3.x);
+			this.checkY(P3.y);
+				
 		}	
 		
 		private function getMiddle(P0:Object, P1:Object):Object

@@ -44,6 +44,12 @@ package com.zavoo.svg.nodes
 			var rx:Number = this.getAttribute('rx',0);
 			var ry:Number = this.getAttribute('ry',0);
 			
+			//Width/height calculations for gradients
+			this.checkX(cx - ry);
+			this.checkX(cx + ry);
+			this.checkY(cy - ry);
+			this.checkY(cy + ry);
+			
 			this._graphicsCommands.push(['ELLIPSE', (cx - rx), (cy - ry), (rx * 2), (ry * 2)]);			
 		}					
 	}
