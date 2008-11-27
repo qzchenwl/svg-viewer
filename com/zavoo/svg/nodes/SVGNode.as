@@ -39,8 +39,6 @@ package com.zavoo.svg.nodes
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
-	
-	import mx.utils.StringUtil;
 		
 	/** Base node extended by all other SVG Nodes **/
 	public class SVGNode extends Sprite
@@ -58,6 +56,27 @@ package com.zavoo.svg.nodes
 		 * Set by svgRoot() to cache the value of the root node
 		 **/ 
 		private var _svgRoot:SVGRoot = null;
+		
+		
+		/**
+		 * Used to calculate width for gradients
+		 **/
+		private var _minX:Number = 0;
+		
+		/**
+		 * Used to calculate width for gradients
+		 **/
+		private var _maxX:Number = 0;
+		
+		/**
+		 * Used to calculate height for gradients
+		 **/
+		private var _minY:Number = 0;
+		
+		/**
+		 * Used to calculate height for gradients
+		 **/
+		private var _maxY:Number = 0;
 			
 		/**
 		 * SVG XML for this node
@@ -635,7 +654,7 @@ package com.zavoo.svg.nodes
 		 * 
 		 * @return Returns the value of defaultValue
 		 **/
-		protected function getAttribute(attribute:*, defaultValue:* = null):* {
+		public function getAttribute(attribute:*, defaultValue:* = null):* {
 			var xmlList:XMLList = this._xml.attribute(attribute);
 			if (xmlList.length() > 0) {
 				return xmlList[0].toString();
@@ -735,6 +754,46 @@ package com.zavoo.svg.nodes
 					}
 				}
 			}
+		}
+		
+		/**
+		 * Check value of x against _minX and _maxX, 
+		 * Update values when appropriate
+		 **/
+		protected function checkX(value:Number):void {
+			if (value < this._minX) {
+				this._minX = value;
+			}
+			if (value > this._maxX) {
+				this._maxX = value;
+			}
+		}
+		
+		/**
+		 * Check value of y against _minY and _maxY, 
+		 * Update values when appropriate
+		 **/
+		protected function checkY(value:Number):void {
+			if (value < this._minY) {
+				this._minY = value;
+			}
+			if (value > this._maxY) {
+				this._maxY = value;
+			}
+		}
+		
+		/**
+		 * Get width calculated from _minX and _maxX
+		 **/
+		public function getWidth():Number {
+			return this._maxX - this._minX;
+		}
+		
+		/**
+		 * Get height calculated from _minY and _maxY
+		 **/
+		public function getHeight():Number {
+			return this._maxY - this._minY;
 		}
 				
 		//Getters / Setters

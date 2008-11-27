@@ -65,6 +65,10 @@ package com.zavoo.svg.nodes
 			else {
 				this._graphicsCommands.push(['RECT', x, y, width, height]);
 			}
+			
+			//Width/height calculations for gradients
+			this.checkX(width);
+			this.checkY(height);
 		}		
 	}
 }

@@ -132,7 +132,12 @@ package com.zavoo.svg.nodes.fills
 						matrix.d = matrixArray[3];
 						matrix.tx = matrixArray[4];
 						matrix.ty = matrixArray[5];					
-					}
+					}					
+				}
+				else {
+					var width:Number = svgNode.width;
+					var height:Number = svgNode.height;
+					matrix.createGradientBox(svgNode.getWidth(), svgNode.getHeight(), 0, 0);
 				}
 				
 				/* tmp = xml.@fx;

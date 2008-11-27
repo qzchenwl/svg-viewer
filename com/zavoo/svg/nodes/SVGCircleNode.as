@@ -43,6 +43,12 @@ package com.zavoo.svg.nodes
 			var cy:Number = this.getAttribute('cy',0);
 			var r:Number = this.getAttribute('r',0);
 			
+			//Width/height calculations for gradients
+			this.checkX(cx - r);
+			this.checkX(cx + r);
+			this.checkY(cy - r);
+			this.checkY(cy + r);
+			
 			this._graphicsCommands.push(['CIRCLE', cx, cy, r]);
 		}
 		
