@@ -39,6 +39,8 @@ package com.zavoo.svg.nodes
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
+	
+	import mx.utils.StringUtil;
 		
 	/** Base node extended by all other SVG Nodes **/
 	public class SVGNode extends Sprite
@@ -141,7 +143,7 @@ package com.zavoo.svg.nodes
 			for each (var attribute:String in SVGNode.attributeList) {
 				xmlList = this._xml.attribute(attribute);
 				if (xmlList.length() > 0) {
-					this._style[attribute] = xmlList[0].toString();
+					this._style[attribute] = StringUtil.trim(xmlList[0].toString());
 				}
 			}
 			
@@ -153,7 +155,7 @@ package com.zavoo.svg.nodes
 				for each(var style:String in styles) {
 					var styleSet:Array = style.split(':');
 					if (styleSet.length == 2) {
-						this._style[styleSet[0]] = styleSet[1];
+						this._style[StringUtil.trim(styleSet[0])] = StringUtil.trim(styleSet[1]);
 					}
 				}
 			}

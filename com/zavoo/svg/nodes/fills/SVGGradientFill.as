@@ -140,7 +140,7 @@ package com.zavoo.svg.nodes.fills
 					matrix.createGradientBox(svgNode.getRoughWidth(), svgNode.getRoughHeight(), 0, 0);
 				}
 				
-				/* tmp = xml.@fx;
+				tmp = xml.@fx;
 				if (tmp) {
 					matrix.tx = SVGColors.cleanNumber(tmp);
 				}
@@ -148,7 +148,7 @@ package com.zavoo.svg.nodes.fills
 				tmp = xml.@fy;
 				if (tmp) {
 					matrix.ty = SVGColors.cleanNumber(tmp);
-				} */
+				}
 				
 				attributes = getAttributes(node);
 				
