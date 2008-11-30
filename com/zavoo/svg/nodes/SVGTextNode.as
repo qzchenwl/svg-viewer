@@ -157,14 +157,14 @@ package com.zavoo.svg.nodes
 					var bitmapData:BitmapData = new BitmapData(this._textField.width, this._textField.height, true, 0x000000);
 					
 					//Double resolution of bitmap
-					this._textField.scaleX = this._textField.scaleX * 2;
-					this._textField.scaleY = this._textField.scaleY * 2;
+					//this._textField.scaleX = this._textField.scaleX * 2;
+					//this._textField.scaleY = this._textField.scaleY * 2;
 					
 					bitmapData.draw(this._textField);			
 					
 					this._textBitmap = new Bitmap(bitmapData);
-					this._textBitmap.scaleX = 0.5;
-					this._textBitmap.scaleY = 0.5;
+					//this._textBitmap.scaleX = 0.5;
+					//this._textBitmap.scaleY = 0.5;
 					this._textBitmap.smoothing = true;		
 								
 					this._textBitmap.x = -2; //account for 2px gutter
