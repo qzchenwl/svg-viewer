@@ -49,22 +49,22 @@ package com.zavoo.svg.nodes
 					this._graphicsCommands.push(['SF']);
 					this._graphicsCommands.push(['M', point[0], point[1]]);
 					//Width/height calculations for gradients
-					this.checkX(point[0]);
-					this.checkY(point[1]);
+					this.setXMinMax(point[0]);
+					this.setYMinMax(point[1]);
 				}
 				else if (i == (points.length - 1)) {
 					this._graphicsCommands.push(['L', point[0], point[1]]);	
 					this._graphicsCommands.push(['Z']);
 					this._graphicsCommands.push(['EF']);
 					//Width/height calculations for gradients
-					this.checkX(point[0]);
-					this.checkY(point[1]);
+					this.setXMinMax(point[0]);
+					this.setYMinMax(point[1]);
 				}
 				else {
 					this._graphicsCommands.push(['L', point[0], point[1]]);
 					//Width/height calculations for gradients
-					this.checkX(point[0]);
-					this.checkY(point[1]);
+					this.setXMinMax(point[0]);
+					this.setYMinMax(point[1]);
 				}				
 			}
 			
