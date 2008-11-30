@@ -762,7 +762,7 @@ package com.zavoo.svg.nodes
 		 * Check value of x against _minX and _maxX, 
 		 * Update values when appropriate
 		 **/
-		protected function checkX(value:Number):void {
+		protected function setXMinMax(value:Number):void {
 			if (value < this._minX) {
 				this._minX = value;
 			}
@@ -775,7 +775,7 @@ package com.zavoo.svg.nodes
 		 * Check value of y against _minY and _maxY, 
 		 * Update values when appropriate
 		 **/
-		protected function checkY(value:Number):void {
+		protected function setYMinMax(value:Number):void {
 			if (value < this._minY) {
 				this._minY = value;
 			}

@@ -67,8 +67,8 @@ package com.zavoo.svg.nodes
 			}
 			
 			//Width/height calculations for gradients
-			this.checkX(width);
-			this.checkY(height);
+			this.setXMinMax(width);
+			this.setYMinMax(height);
 		}		
 	}
 }

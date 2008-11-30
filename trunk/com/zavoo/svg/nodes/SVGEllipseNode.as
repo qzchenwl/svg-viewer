@@ -45,10 +45,10 @@ package com.zavoo.svg.nodes
 			var ry:Number = this.getAttribute('ry',0);
 			
 			//Width/height calculations for gradients
-			this.checkX(cx - ry);
-			this.checkX(cx + ry);
-			this.checkY(cy - ry);
-			this.checkY(cy + ry);
+			this.setXMinMax(cx - ry);
+			this.setXMinMax(cx + ry);
+			this.setYMinMax(cy - ry);
+			this.setYMinMax(cy + ry);
 			
 			this._graphicsCommands.push(['ELLIPSE', (cx - rx), (cy - ry), (rx * 2), (ry * 2)]);			
 		}					

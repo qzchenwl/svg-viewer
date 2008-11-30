@@ -29,7 +29,7 @@ package com.zavoo.svg.nodes
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.geom.Rectangle;
+	import flash.system.Capabilities;
 	import flash.text.Font;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -101,7 +101,7 @@ package com.zavoo.svg.nodes
 				var fontFamily:String = this.getStyle('font-family');				
 				var fontSize:String = this.getStyle('font-size');
 				var fill:String = this.getStyle('fill');
-				
+												
 				var textFormat:TextFormat = this._textField.getTextFormat();
 				
 				if (embeddedFonts.length == 0) { //No embedded fonts, use system fonts
@@ -119,6 +119,10 @@ package com.zavoo.svg.nodes
 				if (fontSize != null) {
 					//Handle floating point font size
 					var fontSizeNum:Number = SVGColors.cleanNumber(fontSize);
+					
+					//Scale font to current DPI					
+					fontSizeNum *= Capabilities.screenDPI / 72;
+					
 					var fontScale:Number = Math.floor(fontSizeNum);
 					textFormat.size = fontScale;
 					
