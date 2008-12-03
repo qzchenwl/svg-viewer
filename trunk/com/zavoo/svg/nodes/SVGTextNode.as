@@ -164,7 +164,7 @@ package com.zavoo.svg.nodes
 					
 					this._textBitmap = new Bitmap(bitmapData);
 					//this._textBitmap.scaleX = 0.5;
-					//this._textBitmap.scaleY = 0.5;
+					//sthis._textBitmap.scaleY = 0.5;
 					this._textBitmap.smoothing = true;		
 								
 					this._textBitmap.x = -2; //account for 2px gutter

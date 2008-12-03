@@ -226,6 +226,10 @@ package com.zavoo.svg.nodes
 				Shape(this.mask).graphics.beginFill(0x000000);
 				Shape(this.mask).graphics.drawRect(xVal, yVal, widthVal, heightVal);
 				Shape(this.mask).graphics.endFill();
+				
+				//Move SVGRoot for non zero x & y masks
+				this.x += xVal;
+				this.y += yVal;
 			}
 		}
 		
