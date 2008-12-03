@@ -228,8 +228,8 @@ package com.zavoo.svg.nodes
 				Shape(this.mask).graphics.endFill();
 				
 				//Move SVGRoot for non zero x & y masks
-				this.x += xVal;
-				this.y += yVal;
+				this.x += -xVal;
+				this.y += -yVal;
 			}
 		}
 		
