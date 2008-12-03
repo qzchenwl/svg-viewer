@@ -25,15 +25,16 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 package com.zavoo.svg {
 	import com.zavoo.svg.events.SVGEvent;
+	import com.zavoo.svg.nodes.SVGNode;
 	import com.zavoo.svg.nodes.SVGRoot;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
+	import flash.external.ExternalInterface;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
@@ -101,6 +102,46 @@ package com.zavoo.svg {
 			}
 			return svgRoot.xml;
 		}
+		
+		public function getAttribute(nodeID:String, attribute:String):String {
+			var elem:* = null;
+       		if (this.svgRoot.xml.@id == nodeID) {
+               elem = this.svgRoot;
+       		}
+       		else {
+            	elem = this.svgRoot.getElement(nodeID);
+       		}
+
+       		if (elem == null) {
+            	return null;
+       		}
+
+       		return elem.getAttribute(attribute);
+   		}
+
+   		public function setAttribute(nodeID:String, attribute:String, attrValue:String):void {
+       		var elem:* = null;
+       		if (this.svgRoot.xml.@id == nodeID) {
+            	elem = this.svgRoot;
+       		}
+       		else {
+            	elem = this.svgRoot.getElement(nodeID);
+      		}
+
+      		if (elem != null) {
+            	elem.setAttribute(attribute, attrValue);
+       		}
+   		}
+   		
+   		public function appendDomChild(xmlStr:String, parentId:String):void {
+       		var node:SVGNode = this.svgRoot.getElement(parentId);
+      		var xml:XML = new XML(xmlStr);
+       		node.appendDomChild(xml, parentId);
+   		}
+
+   		public static function debug(msg:String):void{
+       		ExternalInterface.call('__svg__debug', msg);
+   		}
 		
 		private function onComplete(event:Event):void {
 			this.dispatchEvent(event.clone());
@@ -171,6 +212,10 @@ package com.zavoo.svg {
 				this.graphics.endFill(); 
 			}
 		}
+		
+		/*
+		 * Getters / Setters
+		 */
 			
 		public function set scale(value:Number):void {						
 			svgRoot.scale = value;	
