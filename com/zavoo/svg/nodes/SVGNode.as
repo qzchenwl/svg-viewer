@@ -666,6 +666,31 @@ package com.zavoo.svg.nodes
 		}
 		
 		/**
+		 * @param attribute Attribute to set in SVG XML
+		 * 
+		 * @param attrValue to set		
+		 **/
+		public function setAttribute(attribute:String, attrValue:*):void {
+			var xmlList:XMLList = this._xml.attribute(attribute);
+			xmlList[0] = attrValue;
+
+			this.invalidateDisplay();
+		}
+		
+		/**
+		 * Append a node
+		 * 
+		 * @param xml XML of new node
+		 * 
+		 * @param parentId ?
+		 **/
+		public function appendDomChild(xml:XML, parentId:String):void {
+			this.clearChildren();
+			this._xml.appendChild(xml);
+			this.invalidateDisplay();
+		}
+		
+		/**
 		 * Remove all child nodes
 		 **/		
 		protected function clearChildren():void {			

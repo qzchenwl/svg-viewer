@@ -120,8 +120,12 @@ package com.zavoo.svg.nodes
 					//Handle floating point font size
 					var fontSizeNum:Number = SVGColors.cleanNumber(fontSize);
 					
-					//Scale font to current DPI					
-					fontSizeNum *= Capabilities.screenDPI / 72;
+					//Font size can be in user units, pixels (px), or points (pt); if no
+                   //measurement type given defaults to user units
+                   if (/pt$/.test(fontSize)) {
+                           //Convert points to pixels by scaling font to current DPI
+                           fontSizeNum *= Capabilities.screenDPI / 72;
+                   }
 					
 					var fontScale:Number = Math.floor(fontSizeNum);
 					textFormat.size = fontScale;

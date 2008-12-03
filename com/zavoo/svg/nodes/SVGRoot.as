@@ -123,7 +123,7 @@ package com.zavoo.svg.nodes
 		/**
 		 * Register a node
 		 * 
-		 * @param id id to register node under
+		 * @param id to register node under
 		 * 
 		 * @param node node to be registered
 		 **/
@@ -131,6 +131,19 @@ package com.zavoo.svg.nodes
 			if (this._elementById[id] == undefined) {						
 				this._elementById[id] = node;
 			}			
+		}
+		
+		/**
+		 * Unregister a node
+		 * 
+		 * @param id to unregister
+		 * 
+		 **/
+		 
+		public function unregisterElement(id:String):void {
+ 			if (this._elementById[id] != undefined) {
+				delete this._elementById[id];				
+			}
 		}
 		
 		/**
