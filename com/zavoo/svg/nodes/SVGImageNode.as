@@ -34,7 +34,7 @@ package com.zavoo.svg.nodes
 	import flash.geom.Matrix;
 	import flash.utils.ByteArray;
 	
-	import mx.utils.Base64Decoder;
+	import com.zavoo.svg.utils.Base64Decoder;
 	
 	public class SVGImageNode extends SVGNode
 	{		
