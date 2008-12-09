@@ -64,6 +64,10 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
 <tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../SVGNode.html#isCopy">isCopy</a> : Boolean<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="../SVGNode.html">SVGNode</a></td>
+</tr>
+<tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../SVGNode.html#svgRoot">svgRoot</a> : <a href="../../nodes/SVGRoot.html">SVGRoot</a>
 <div class="summaryTableDescription">
    Recursively searches for the root node
@@ -104,10 +108,20 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol"><a href="../SVGNode.html">SVGNode</a></td>
 </tr>
 <tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../SVGNode.html#_id">_id</a> : String = "null"<div class="summaryTableDescription">
+   The ID of this node.</div>
+</td><td class="summaryTableOwnerCol"><a href="../SVGNode.html">SVGNode</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../SVGNode.html#_invalidDisplay">_invalidDisplay</a> : Boolean = false<div class="summaryTableDescription">
    If true, redraw sprite graphics
    Set to true on any change to xml
    </div>
+</td><td class="summaryTableOwnerCol"><a href="../SVGNode.html">SVGNode</a></td>
+</tr>
+<tr class="hideInheritedProtectedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../SVGNode.html#_isCopy">_isCopy</a> : Boolean = false<div class="summaryTableDescription">
+   Flag set if a node is a copy of another node.</div>
 </td><td class="summaryTableOwnerCol"><a href="../SVGNode.html">SVGNode</a></td>
 </tr>
 <tr class="hideInheritedProtectedProperty">
@@ -157,6 +171,16 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
+<a class="signatureLink" href="../SVGNode.html#appendDomChild()">appendDomChild</a>(xml:XML, parentId:String):void</div>
+<div class="summaryTableDescription">
+   Append a node
+   
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="../SVGNode.html">SVGNode</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
 <a class="signatureLink" href="../SVGNode.html#getAttribute()">getAttribute</a>(attribute:*, defaultValue:* = null):*</div>
 <div class="summaryTableDescription">
    </div>
@@ -165,9 +189,18 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="../SVGNode.html#getHeight()">getHeight</a>():Number</div>
+<a class="signatureLink" href="../SVGNode.html#getRoughHeight()">getRoughHeight</a>():Number</div>
 <div class="summaryTableDescription">
    Get height calculated from _minY and _maxY
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="../SVGNode.html">SVGNode</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../SVGNode.html#getRoughWidth()">getRoughWidth</a>():Number</div>
+<div class="summaryTableDescription">
+   Get width calculated from _minX and _maxX
    </div>
 </td><td class="summaryTableOwnerCol"><a href="../SVGNode.html">SVGNode</a></td>
 </tr>
@@ -183,18 +216,17 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="../SVGNode.html#getWidth()">getWidth</a>():Number</div>
+<a class="signatureLink" href="../SVGNode.html#invalidateDisplay()">invalidateDisplay</a>():void</div>
 <div class="summaryTableDescription">
-   Get width calculated from _minX and _maxX
+   Force a redraw of a node and its children
    </div>
 </td><td class="summaryTableOwnerCol"><a href="../SVGNode.html">SVGNode</a></td>
 </tr>
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="../SVGNode.html#invalidateDisplay()">invalidateDisplay</a>():void</div>
+<a class="signatureLink" href="../SVGNode.html#setAttribute()">setAttribute</a>(attribute:String, attrValue:*):void</div>
 <div class="summaryTableDescription">
-   Force a redraw of a node and its children
    </div>
 </td><td class="summaryTableOwnerCol"><a href="../SVGNode.html">SVGNode</a></td>
 </tr>
@@ -225,26 +257,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
 <tr>
 <th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
-</tr>
-<tr class="hideInheritedProtectedMethod">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="../SVGNode.html#checkX()">checkX</a>(value:Number):void</div>
-<div class="summaryTableDescription">
-   Check value of x against _minX and _maxX, 
-   Update values when appropriate
-   </div>
-</td><td class="summaryTableOwnerCol"><a href="../SVGNode.html">SVGNode</a></td>
-</tr>
-<tr class="hideInheritedProtectedMethod">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="../SVGNode.html#checkY()">checkY</a>(value:Number):void</div>
-<div class="summaryTableDescription">
-   Check value of y against _minY and _maxY, 
-   Update values when appropriate
-   </div>
-</td><td class="summaryTableOwnerCol"><a href="../SVGNode.html">SVGNode</a></td>
 </tr>
 <tr class="hideInheritedProtectedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
@@ -386,6 +398,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedProtectedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
+<a class="signatureLink" href="../SVGNode.html#registerNode()">registerNode</a>():void</div>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="../SVGNode.html">SVGNode</a></td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
 <a class="signatureLink" href="../SVGNode.html#runGraphicsCommands()">runGraphicsCommands</a>():void</div>
 <div class="summaryTableDescription">
    Execute graphics commands contained in var _graphicsCommands
@@ -413,6 +432,26 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="../SVGNode.html#setupFilters()">setupFilters</a>():void</div>
 <div class="summaryTableDescription">
    Add any assigned filters to node
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="../SVGNode.html">SVGNode</a></td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../SVGNode.html#setXMinMax()">setXMinMax</a>(value:Number):void</div>
+<div class="summaryTableDescription">
+   Check value of x against _minX and _maxX, 
+   Update values when appropriate
+   </div>
+</td><td class="summaryTableOwnerCol"><a href="../SVGNode.html">SVGNode</a></td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../SVGNode.html#setYMinMax()">setYMinMax</a>(value:Number):void</div>
+<div class="summaryTableDescription">
+   Check value of y against _minY and _maxY, 
+   Update values when appropriate
    </div>
 </td><td class="summaryTableOwnerCol"><a href="../SVGNode.html">SVGNode</a></td>
 </tr>
