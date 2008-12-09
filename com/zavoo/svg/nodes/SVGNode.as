@@ -80,6 +80,12 @@ package com.zavoo.svg.nodes
 		private var _maxY:Number = 0;
 			
 		/**
+		 * Flag set if a node is a copy of another node. 
+		 * Example: children of a Use node
+		 */
+		protected var _isCopy:Boolean = false;
+		
+		/**
 		 * SVG XML for this node
 		 **/	
 		protected var _xml:XML;
@@ -104,6 +110,14 @@ package com.zavoo.svg.nodes
 		protected var _invalidDisplay:Boolean = false;
 		
 		protected var _firstRendering:Boolean = true;
+		
+		/**
+		 * The ID of this node. Used so we can detect if the ID has changed.
+		 */
+		protected var _id:String = null;
+		
+		
+			
 				
 		/**
 		 * Constructor
@@ -136,6 +150,10 @@ package com.zavoo.svg.nodes
 			
 			var xmlList:XMLList;
 			
+			var parentIsCopy:Boolean = false;
+			
+			this.registerNode();
+
 			this._style = new Object();
 			
 			//Get styling from XML attribute list
@@ -491,16 +509,38 @@ package com.zavoo.svg.nodes
 			}
 		}
 		
+		protected function registerNode():void {
+			//We need to account for Use nodes nested inside of other Use nodes / Symbols
+			var parentIsCopy:Boolean = false;
+			if (this.parent is SVGNode) {
+				parentIsCopy = SVGNode(this.parent).isCopy;
+			}			
+			if (parentIsCopy) {
+				this._isCopy = true;
+			}
+			else {
+				//Unregister and re-register the node's ID if it has changed
+				var newID:String = this._xml.@id;
+				if (newID == '' || newID == null) {
+					newID = null;
+				}
+	 			
+				if (newID != null && newID != this._id) {
+					this.svgRoot.unregisterElement(this._id);
+					this._id = newID;
+					this.svgRoot.registerElement(this._id, this);
+				}
+			}
+		}
+		
 		/**
 		 * If node has an "id" attribute, register it with the root node
 		 **/
 		protected function onNodeAdded(event:Event):void {
 			if (this.svgRoot) {	
-				var id:String = this._xml.@id;
-				if (id != "") {
-					this.svgRoot.registerElement(id, this);
-				}
-			
+				
+				this.registerNode();
+							
 				this.svgRoot.dispatchEvent(new SVGMutationEvent(this, SVGMutationEvent.DOM_NODE_INSERTED)); 
 			}
 						
@@ -530,6 +570,9 @@ package com.zavoo.svg.nodes
 					var validNode:Boolean = true;
 					
 					switch(nodeName) {
+						case "a":
+							this.addChild(new SVGANode(childXML));
+							break;
 						case "animate":
 							this.addChild(new SVGAnimateNode(childXML));
 							break;	
@@ -894,6 +937,11 @@ package com.zavoo.svg.nodes
 		public function get graphicsCommands():Array {
 			return this._graphicsCommands;
 		}
+		
+		
+		public function get isCopy():Boolean {
+			return this._isCopy;
+		}	
 			
 		
 		/**
