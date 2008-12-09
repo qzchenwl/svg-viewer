@@ -25,6 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 package com.zavoo.svg.nodes
 {
+	import com.zavoo.svg.SVGViewer;
 	import com.zavoo.svg.data.SVGColors;
 	import com.zavoo.svg.events.SVGEvent;
 	import com.zavoo.svg.events.SVGUIEvent;
@@ -219,6 +220,12 @@ package com.zavoo.svg.nodes
 					this._height = SVGColors.cleanNumber(h);
 					this.addRootMask(0, 0, this._width, this._height);
 				}
+			}
+			
+			var bgColor:String = this.getStyle('background-color');
+			if ((bgColor != null)
+				&& (this.parent is SVGViewer)) {
+				SVGViewer(this.parent).backgroundColor = SVGColors.getColor(bgColor);
 			}
 		}		
 		

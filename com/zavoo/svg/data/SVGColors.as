@@ -273,5 +273,9 @@ package com.zavoo.svg.data
 			numString = numString.replace(/[^0-9\.-]+/sig,'');
 			return Number(numString);
 		}
+		
+		static public function trim(string:String):String {
+			return string.replace(/^\s+/s, '').replace(/\s+$/s, '');			
+		}
 	}
 }
