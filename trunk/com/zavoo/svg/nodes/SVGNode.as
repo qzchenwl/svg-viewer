@@ -40,7 +40,6 @@ package com.zavoo.svg.nodes
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	
-	import mx.utils.StringUtil;
 		
 	/** Base node extended by all other SVG Nodes **/
 	public class SVGNode extends Sprite
@@ -143,7 +142,7 @@ package com.zavoo.svg.nodes
 			for each (var attribute:String in SVGNode.attributeList) {
 				xmlList = this._xml.attribute(attribute);
 				if (xmlList.length() > 0) {
-					this._style[attribute] = StringUtil.trim(xmlList[0].toString());
+					this._style[attribute] = SVGColors.trim(xmlList[0].toString());
 				}
 			}
 			
@@ -155,7 +154,7 @@ package com.zavoo.svg.nodes
 				for each(var style:String in styles) {
 					var styleSet:Array = style.split(':');
 					if (styleSet.length == 2) {
-						this._style[StringUtil.trim(styleSet[0])] = StringUtil.trim(styleSet[1]);
+						this._style[SVGColors.trim(styleSet[0])] = SVGColors.trim(styleSet[1]);
 					}
 				}
 			}
@@ -225,6 +224,7 @@ package com.zavoo.svg.nodes
 						var command:String = String(tranArray[0]);
 						var args:String = String(tranArray[1]);
 						args = args.replace(')','');
+						args = args.replace(/\s*,\s*/g, ','); 
 						var argsArray:Array = args.split(/[, ]/);
 						
 						switch (command) {
@@ -706,7 +706,16 @@ package com.zavoo.svg.nodes
 		public function invalidateDisplay():void {
 			if (this._invalidDisplay == false) {
 				this._invalidDisplay = true;
-				this.addEventListener(Event.ENTER_FRAME, redrawNode);				
+				this.addEventListener(Event.ENTER_FRAME, redrawNode);	
+				if (this.svgRoot != null) {
+					this.svgRoot.invalidNodeCount++;
+				}
+				for (var i:int = 0; i < this.numChildren; i++) {
+					var child:DisplayObject = this.getChildAt(i);
+					if (child is SVGNode) {
+						SVGNode(child).invalidateDisplay();
+					}
+				}
 			}			
 		}
 		

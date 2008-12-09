@@ -61,7 +61,7 @@ package com.zavoo.svg {
 			
 			this.addChild(svgRoot);
 						
-			svgRoot.addEventListener(SVGEvent.SVG_LOAD, resizeContainer);
+			svgRoot.addEventListener(SVGEvent.SVG_LOAD, resizeContainer);			
 			svgRoot.addEventListener(Event.RESIZE, resizeContainer);
 			
 		}		
@@ -148,7 +148,7 @@ package com.zavoo.svg {
 			this.dispatchEvent(event);
 			
 			var byteArray:ByteArray = ByteArray(_urlLoader.data);
-			
+						
 			var readCount:uint = 512;
 			if (byteArray.bytesAvailable < readCount) {
 				readCount = byteArray.bytesAvailable;
@@ -203,12 +203,13 @@ package com.zavoo.svg {
 		}		
 				
 		private function resizeContainer(event:Event = null):void {
-			
+			 			
 			super.width = svgRoot.width;
 			super.height = svgRoot.height;
 			
 			this.graphics.clear();
 			if (this._backgroundColor >= 0) {
+				this.graphics.clear();
 				this.graphics.beginFill(this._backgroundColor);
 				this.graphics.drawRect(0, 0, svgRoot.width, svgRoot.height);
 				this.graphics.endFill(); 
