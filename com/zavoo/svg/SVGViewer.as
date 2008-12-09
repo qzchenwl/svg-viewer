@@ -144,7 +144,9 @@ package com.zavoo.svg {
    		}
 		
 		private function onComplete(event:Event):void {
-			this.dispatchEvent(event.clone());
+			var event:Event = new Event(event.type, event.bubbles, event.cancelable);
+			this.dispatchEvent(event);
+			
 			var byteArray:ByteArray = ByteArray(_urlLoader.data);
 			
 			var readCount:uint = 512;
