@@ -45,9 +45,10 @@ package com.zavoo.svg.nodes
 		/**
 		 * Track changes to _symbol
 		 **/		  
-		private var _revision:uint = 0;
+		private var _revision:uint = 0;				
 		
 		public function SVGUseNode(xml:XML):void {
+			this._isCopy = true;
 			super(xml);			
 		}				
 		

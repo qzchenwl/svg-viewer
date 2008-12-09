@@ -92,6 +92,7 @@ package com.zavoo.svg.nodes
 		 * Render text to a bitmap and add bitmap to node
 		 **/
 		override protected function setAttributes():void {
+			var currentNode:SVGNode;
 			
 			super.setAttributes();
 			
@@ -101,6 +102,12 @@ package com.zavoo.svg.nodes
 				var fontFamily:String = this.getStyle('font-family');				
 				var fontSize:String = this.getStyle('font-size');
 				var fill:String = this.getStyle('fill');
+				var fontWeight:String = this.getStyle('font-weight');
+				var textAnchor:String = this.getStyle('text-anchor');
+				
+				if (/^\s*$/.test(textAnchor)) {
+					textAnchor = null;
+				}
 												
 				var textFormat:TextFormat = this._textField.getTextFormat();
 				
@@ -140,9 +147,55 @@ package com.zavoo.svg.nodes
 				if (fill != null) {
 					textFormat.color = SVGColors.getColor(fill);
 				}
-								
+				
+				// only bold/no bold supported for now (SVG has many levels of bold)
+				currentNode = this;
+				while (fontWeight == 'inherit') {					
+					if (currentNode.parent is SVGNode) {
+						currentNode = SVGNode(currentNode.parent);
+						fontWeight = currentNode.getStyle('font-weight');
+					}
+					else {
+						fontWeight = null;
+					}
+				}					
+				if (fontWeight != null && fontWeight != 'normal') {
+					textFormat.bold = true;
+				}
+			
 				this._textField.text = this._text;
 				this._textField.setTextFormat(textFormat);
+				
+				var textLineMetrics:TextLineMetrics = this._textField.getLineMetrics(0);
+				
+				currentNode = this;
+				while (textAnchor == 'inherit') {					
+					if (currentNode.parent is SVGNode) {
+						currentNode = SVGNode(currentNode.parent);
+						textAnchor = currentNode.getStyle('text-anchor');
+					}
+					else {
+						textAnchor = null;
+					}
+				}	
+				
+				//Handle text-anchor attribute
+				switch (textAnchor) {					
+					case 'middle':
+						this._textField.x = textLineMetrics.x - 2 - Math.floor(textLineMetrics.width / 2);
+						break;
+					case 'end':
+						this._textField.x = textLineMetrics.x - 2 - textLineMetrics.width;
+						break;
+					default: //'start'
+						// 2 pixel gutter
+						this._textField.x = -2;
+						break;
+				}
+				
+				//SVG Text elements position y attribute as baseline of text, not the
+				//top
+				this._textField.y = 0 - textLineMetrics.ascent - 2;	
 				
 				if (this._textBitmap != null) {
 					if (this.contains(this._textBitmap)) {
@@ -155,24 +208,18 @@ package com.zavoo.svg.nodes
 					this.removeChild(this._textField);
 				}
 				
-				var textLineMetrics:TextLineMetrics = this._textField.getLineMetrics(0);
+				
 								
 				if (embeddedFonts.length == 0) { //No embedded fonts, so we need to render the text to bitmap to support rotated text
 					var bitmapData:BitmapData = new BitmapData(this._textField.width, this._textField.height, true, 0x000000);
-					
-					//Double resolution of bitmap
-					//this._textField.scaleX = this._textField.scaleX * 2;
-					//this._textField.scaleY = this._textField.scaleY * 2;
-					
+										
 					bitmapData.draw(this._textField);			
 					
-					this._textBitmap = new Bitmap(bitmapData);
-					//this._textBitmap.scaleX = 0.5;
-					//sthis._textBitmap.scaleY = 0.5;
+					this._textBitmap = new Bitmap(bitmapData);					
 					this._textBitmap.smoothing = true;		
 								
-					this._textBitmap.x = -2; //account for 2px gutter
-					this._textBitmap.y =  -2; //account for 2px gutter
+					this._textBitmap.x = this._textField.x; 
+					this._textBitmap.y =  this._textField.y; 
 					
 					this._textField = null;
 				}
@@ -198,8 +245,8 @@ package com.zavoo.svg.nodes
 			}	
 		} 		
 		
-		override protected function transformNode():void {
+		/* override protected function transformNode():void {
 			super.transformNode();	
-		}	
+		} */	
 	}
 }
