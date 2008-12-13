@@ -113,6 +113,7 @@ package com.zavoo.svg.nodes
 			default xml namespace = svg;
 			this._elementById = new Object();	
 			this.clearChildren();		
+			this._invalidNodeCount = 0;
 			super.xml = value;	
 			
 			this._loadTime = getTimer();
@@ -317,13 +318,15 @@ package com.zavoo.svg.nodes
 		
 		
 		public function set invalidNodeCount(value:int):void {
-			/* if (value < 0) {
+			if (value < 0) {
 				trace('Something is wrong with the invalid node counter! It has a value of ' + value.toString() + '!');
-			} */
+			} 
 			this._invalidNodeCount = value;
 			if (value == 0) {
 				this.dispatchEvent(new SVGEvent(SVGEvent.SVG_LOAD));
 			}
+			
+			
 		}
 		
 		public function get invalidNodeCount():int {

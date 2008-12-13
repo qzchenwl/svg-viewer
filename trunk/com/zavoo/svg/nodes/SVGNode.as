@@ -39,6 +39,7 @@ package com.zavoo.svg.nodes
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
+	import flash.utils.describeType;
 	
 		
 	/** Base node extended by all other SVG Nodes **/
@@ -116,7 +117,12 @@ package com.zavoo.svg.nodes
 		 */
 		protected var _id:String = null;
 		
-		
+		public function nodeType():String {
+			
+			var type:XML = describeType(this);
+			return type.@name;
+			
+		}
 			
 				
 		/**
@@ -750,7 +756,8 @@ package com.zavoo.svg.nodes
 			if (this._invalidDisplay == false) {
 				this._invalidDisplay = true;
 				this.addEventListener(Event.ENTER_FRAME, redrawNode);	
-				if (this.svgRoot != null) {
+				if (this.svgRoot != null 
+					&& !(this is SVGRoot)) {
 					this.svgRoot.invalidNodeCount++;
 				}
 				for (var i:int = 0; i < this.numChildren; i++) {
@@ -807,7 +814,9 @@ package com.zavoo.svg.nodes
 		 * Track nodes as they are added so we know when to send the RENDER_DONE event
 		 **/
 		override public function addChild(child:DisplayObject):DisplayObject {
-			
+			if (child is SVGRoot) {
+				trace ("wtf?");
+			}
 			if (child is SVGNode) {				
 				this.svgRoot.invalidNodeCount++;
 			}
@@ -904,6 +913,7 @@ package com.zavoo.svg.nodes
 		**/		
 		public function set xml(xml:XML):void {		
 			this._xml = xml;
+			this.clearChildren();
 			this.invalidateDisplay();
 			
 			if (this.svgRoot) { //if !null then already added
