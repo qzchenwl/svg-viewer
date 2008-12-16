@@ -26,10 +26,10 @@ OTHER DEALINGS IN THE SOFTWARE.
 package com.zavoo.svg.nodes
 {
 	import com.zavoo.svg.data.SVGColors;
+	import com.zavoo.svg.data.SVGUnits;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.system.Capabilities;
 	import flash.text.Font;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -125,14 +125,13 @@ package com.zavoo.svg.nodes
 				
 				if (fontSize != null) {
 					//Handle floating point font size
-					var fontSizeNum:Number = SVGColors.cleanNumber(fontSize);
+					var fontSizeNum:Number = SVGUnits.cleanNumber(fontSize);
 					
 					//Font size can be in user units, pixels (px), or points (pt); if no
-                   //measurement type given defaults to user units
-                   if (/pt$/.test(fontSize)) {
-                           //Convert points to pixels by scaling font to current DPI
-                           fontSizeNum *= Capabilities.screenDPI / 72;
-                   }
+                    //measurement type given defaults to user units
+					if (SVGUnits.getType(fontSize) == SVGUnits.PT) {
+						fontSizeNum = SVGUnits.pointsToPixels(fontSizeNum);
+					}
 					
 					var fontScale:Number = Math.floor(fontSizeNum);
 					textFormat.size = fontScale;

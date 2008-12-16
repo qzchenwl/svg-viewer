@@ -26,6 +26,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 package com.zavoo.svg.nodes
 {
 	import com.zavoo.svg.data.SVGColors;
+	import com.zavoo.svg.events.SVGEvent;
 	import com.zavoo.svg.events.SVGMouseEvent;
 	import com.zavoo.svg.events.SVGMutationEvent;
 	import com.zavoo.svg.nodes.fills.SVGGradientFill;
@@ -806,6 +807,19 @@ package com.zavoo.svg.nodes
 				if (!(this is SVGRoot)) {
 					this.svgRoot.invalidNodeCount--;
 				}
+				else if (this is SVGRoot) {
+					var hasChildren:Boolean = false;
+					for (var i:int = 0; i < this.numChildren; i++) {
+						var child:DisplayObject = this.getChildAt(i);
+						if (child is SVGNode) {
+							hasChildren = true;
+							break;
+						}
+					}
+					if (!hasChildren) { 
+						this.dispatchEvent(new SVGEvent(SVGEvent.SVG_LOAD));
+					}
+ 				}
 									
 			}
 		}
