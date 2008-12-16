@@ -53,7 +53,7 @@ package com.zavoo.svg.data
 		 **/
 		static public function getType(unit:*):Number {
 			if (unit === null || unit === undefined || unit === '') {
-				return null;
+				return 0;
 			}
 			
 			// FIXME: Handle negative values; the spec says implementations
@@ -80,7 +80,7 @@ package com.zavoo.svg.data
 			} else if (/^\s*[0-9]+%\s*$/.test(unit)) {
 				return SVGUnits.PERCENT;
 			} else {
-				return null;
+				return 0;
 			}
 		}
 		

@@ -61,11 +61,12 @@ package com.zavoo.svg {
 			
 			this.addChild(svgRoot);
 						
-			svgRoot.addEventListener(SVGEvent.SVG_LOAD, resizeContainer);			
+			svgRoot.addEventListener(SVGEvent.SVG_LOAD, onSvgLoad);			
 			svgRoot.addEventListener(Event.RESIZE, resizeContainer);
 			
 		}		
-				
+			
+		
 		public function set source(value:*):void {
 						
 			var xml:XML = null;
@@ -201,6 +202,13 @@ package com.zavoo.svg {
 									
 			return new XML(xmlString);
 		}		
+		
+		private function onSvgLoad(event:SVGEvent):void {
+			var newEvent:SVGEvent = new SVGEvent(SVGEvent.SVG_LOAD, event.bubbles, event.cancelable);
+			this.dispatchEvent(newEvent);
+			
+			this.resizeContainer();
+		}	
 				
 		private function resizeContainer(event:Event = null):void {
 			 			
