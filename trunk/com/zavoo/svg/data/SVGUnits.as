@@ -30,17 +30,18 @@ package com.zavoo.svg.data
 	
 	public class SVGUnits
 	{
-		static public var USER:Number = 0; /* User coordinates */
+		static public var UNKNOWN:Number = 0;
+		static public var USER:Number = 1; /* User coordinates */
 		// CSS Unit Types
-		static public var EM:Number = 1;
-		static public var EX:Number = 2;
-		static public var PX:Number = 3;
-		static public var PT:Number = 4;
-		static public var PC:Number = 5;
-		static public var CM:Number = 6;
-		static public var MM:Number = 7;
-		static public var IN:Number = 8;
-		static public var PERCENT:Number = 9; /* Relative percentage; ex: 50% */
+		static public var EM:Number = 2;
+		static public var EX:Number = 3;
+		static public var PX:Number = 4;
+		static public var PT:Number = 5;
+		static public var PC:Number = 6;
+		static public var CM:Number = 7;
+		static public var MM:Number = 8;
+		static public var IN:Number = 9;
+		static public var PERCENT:Number = 10; /* Relative percentage; ex: 50% */
 		
 		/**
 		 * Determines the type of unit given, such as pixels, points, ems, etc.
@@ -51,9 +52,9 @@ package com.zavoo.svg.data
 		 * of the static constants on this class such as SVGUnits.PX, SVGUnits.PT,
 		 * etc.		
 		 **/
-		static public function getType(unit:*):Number {
+		static public function getType(unit:*):int {
 			if (unit === null || unit === undefined || unit === '') {
-				return 0;
+				return UNKNOWN;
 			}
 			
 			// FIXME: Handle negative values; the spec says implementations
@@ -80,7 +81,7 @@ package com.zavoo.svg.data
 			} else if (/^\s*[0-9]+%\s*$/.test(unit)) {
 				return SVGUnits.PERCENT;
 			} else {
-				return 0;
+				return UNKNOWN;
 			}
 		}
 		
