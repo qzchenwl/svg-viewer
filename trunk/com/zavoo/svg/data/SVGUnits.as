@@ -104,9 +104,7 @@ package com.zavoo.svg.data
 		 * @return Numeric value of string will all characters removed except '0-9', '.', and '-'
 		 **/
 		static public function cleanNumber(num:*):Number {
-			var numString:String = String(num);
-			numString = numString.replace(/[^0-9\.-]+/sig,'');
-			return Number(numString);
+			return SVGColors.cleanNumber(num);
 		}
 	}
 }

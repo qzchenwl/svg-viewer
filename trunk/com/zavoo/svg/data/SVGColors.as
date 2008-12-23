@@ -217,6 +217,8 @@ package com.zavoo.svg.data
 		 * @return Numeric value of color
 		 **/
 		static public function getColor(color:String):Number {
+			color = trim(color);
+			
 			if (color != null) {			
 				if(color.match(/^#\S{6,}/s)) {
 					color = color.replace('#', '0x');
@@ -228,11 +230,34 @@ package com.zavoo.svg.data
 					return parseInt(color);
 				}
 				else if(color.indexOf("rgb") != -1){
-					var str:Array = color.replace(/\srgb\(|\)/g, "").split(",");
-   					var r:int = cleanNumber(str[0]);
-   					var g:int = cleanNumber(str[1]);
-   					var b:int = cleanNumber(str[2]);
-   					return rgbToNumber(r, g, b);
+					//Copyright (c) 2008 Richard R. Masters
+					//http://code.google.com/p/sgweb/
+					var str:Array = color.replace(/\s|rgb\(|\)/g, "").split(",");
+					if (str[0].match(/%/)) {
+						str[0]=str[0].replace(/%/g, "");
+						r = str[0];
+						r = r * 256 / 100;
+					}
+					else {
+						r = str[0];
+					}
+					if (str[1].match(/%/)) {
+						str[1]=str[1].replace(/%/g, "");
+						g = str[1];
+						g = g * 256 / 100;
+					}
+					else {
+						g = str[1];
+					}
+					if (str[2].match(/%/)) {
+						str[2]=str[2].replace(/%/g, "");
+						b = str[2];
+						b = b * 256 / 100;
+					}
+					else {
+						b = str[2];
+					}
+					return rgbToNumber(r, g, b);
 				   
 				}
 				else if (colors.hasOwnProperty(color)) {
@@ -269,7 +294,9 @@ package com.zavoo.svg.data
 		 * @return Numeric value of string will all characters removed except '0-9', '.', and '-'
 		 **/
 		static public function cleanNumber(num:*):Number {
-			var numString:String = String(num);
+			var numString:String = trim(String(num));
+			var numArray:Array = numString.split(' ');			
+			numString = numArray[0];
 			numString = numString.replace(/[^0-9\.-]+/sig,'');
 			return Number(numString);
 		}
