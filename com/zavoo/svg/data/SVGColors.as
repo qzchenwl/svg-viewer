@@ -232,6 +232,10 @@ package com.zavoo.svg.data
 				else if(color.indexOf("rgb") != -1){
 					//Copyright (c) 2008 Richard R. Masters
 					//http://code.google.com/p/sgweb/
+					var r:Number;
+					var g:Number;
+					var b:Number;
+					
 					var str:Array = color.replace(/\s|rgb\(|\)/g, "").split(",");
 					if (str[0].match(/%/)) {
 						str[0]=str[0].replace(/%/g, "");
